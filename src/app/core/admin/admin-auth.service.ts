@@ -3,6 +3,8 @@ import { Injectable, inject, signal } from '@angular/core';
 import { SupabaseService } from '../supabase/supabase.service';
 import { AppAdmin } from './admin.models';
 
+export const SIN_ACCESO_MENSAJE = 'Esta cuenta no tiene acceso de desarrollador.';
+
 @Injectable({ providedIn: 'root' })
 export class AdminAuthService {
   private readonly supabase = inject(SupabaseService).client;
@@ -35,7 +37,7 @@ export class AdminAuthService {
       await this.loadAdmin(data.user.id);
       if (!this.admin()) {
         await this.supabase.auth.signOut();
-        throw new Error('Esta cuenta no tiene acceso de desarrollador.');
+        throw new Error(SIN_ACCESO_MENSAJE);
       }
     }
   }

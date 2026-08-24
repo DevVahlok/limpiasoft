@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 
-import { AdminAuthService } from '../../../core/admin/admin-auth.service';
+import { AdminAuthService, SIN_ACCESO_MENSAJE } from '../../../core/admin/admin-auth.service';
 
 @Component({
   selector: 'app-admin-login',
@@ -49,7 +49,8 @@ export class AdminLoginComponent {
       await this.adminAuthService.login(email, password);
       await this.router.navigateByUrl('/admin');
     } catch (err) {
-      this.errorMessage = err instanceof Error ? err.message : 'Email o contraseña incorrectos.';
+      this.errorMessage =
+        err instanceof Error && err.message === SIN_ACCESO_MENSAJE ? err.message : 'Email o contraseña incorrectos.';
     } finally {
       this.loading = false;
     }
