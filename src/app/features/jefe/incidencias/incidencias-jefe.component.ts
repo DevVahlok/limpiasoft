@@ -6,6 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 
+import { AuthService } from '../../../core/auth/auth.service';
 import { EstadoIncidencia, Incidencia } from '../../../core/incidencias/incidencia.models';
 import { IncidenciasService } from '../../../core/incidencias/incidencias.service';
 import { mesActualIso, rangoDelMes } from '../../../core/turnos/fecha.util';
@@ -16,6 +17,12 @@ const ETIQUETAS_TIPO: Record<string, string> = {
   ausencia: 'Ausencia',
   problema_sitio: 'Problema en el sitio',
   otro: 'Otro',
+};
+
+const ETIQUETAS_ESTADO: Record<string, string> = {
+  pendiente: 'Pendiente',
+  revisada: 'Revisada',
+  resuelta: 'Resuelta',
 };
 
 /** Fecha por la que se filtra y ordena: la del turno si está vinculado, si no la de cuando se reportó. */
@@ -42,11 +49,13 @@ function fechaEfectiva(i: Incidencia): string {
 export class IncidenciasJefeComponent implements OnInit {
   private readonly incidenciasService = inject(IncidenciasService);
   private readonly snackBar = inject(MatSnackBar);
+  readonly authService = inject(AuthService);
 
   mes = mesActualIso();
   readonly incidencias = signal<Incidencia[]>([]);
   readonly loading = signal(true);
   readonly etiquetasTipo = ETIQUETAS_TIPO;
+  readonly etiquetasEstado = ETIQUETAS_ESTADO;
   readonly columnas = ['empleado', 'fecha', 'puesto', 'tipo', 'descripcion', 'estado'];
 
   private todas: Incidencia[] = [];

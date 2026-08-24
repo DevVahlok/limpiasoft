@@ -9,7 +9,7 @@
       <span>{{ turno.empleado?.nombre_completo || '—' }} · {{ turno.puesto?.nombre || '—' }}</span>
       <span class="estado" [ngClass]="'estado-' + turno.estado">{{ etiquetasEstado[turno.estado] }}</span>
     </div>
-    <div class="acciones" *ngIf="!data.soloLectura">
+    <div class="acciones" *ngIf="!data.soloLectura && !data.pausada">
       <button mat-icon-button (click)="editarTurno(turno)" aria-label="Editar turno">
         <mat-icon>edit</mat-icon>
       </button>
@@ -17,7 +17,7 @@
         <mat-icon>delete</mat-icon>
       </button>
     </div>
-    <div class="acciones" *ngIf="data.soloLectura">
+    <div class="acciones" *ngIf="data.soloLectura && !data.pausada">
       <button mat-icon-button (click)="reportarIncidencia(turno)" aria-label="Reportar incidencia">
         <mat-icon>report_problem</mat-icon>
       </button>
@@ -27,7 +27,7 @@
 
 <div mat-dialog-actions align="end">
   <button mat-button (click)="cerrar()">Cerrar</button>
-  <button mat-flat-button color="primary" *ngIf="!data.soloLectura" (click)="nuevoTurno()">
+  <button mat-flat-button color="primary" *ngIf="!data.soloLectura && !data.pausada" (click)="nuevoTurno()">
     <mat-icon>add</mat-icon>
     Añadir turno
   </button>

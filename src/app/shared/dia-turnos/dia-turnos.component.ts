@@ -13,6 +13,8 @@ export interface DiaTurnosData {
   fecha: string;
   turnos: Turno[];
   soloLectura: boolean;
+  /** Empresa en modo solo lectura por pausa: oculta también las acciones del jefe. */
+  pausada?: boolean;
 }
 
 export interface DiaTurnosResultado {

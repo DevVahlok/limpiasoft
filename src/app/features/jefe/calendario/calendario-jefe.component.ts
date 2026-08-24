@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 
 import { Profile } from '../../../core/auth/auth.models';
+import { AuthService } from '../../../core/auth/auth.service';
 import { Turno } from '../../../core/turnos/turno.models';
 import { TurnosService } from '../../../core/turnos/turnos.service';
 import { CalendarioMesComponent, RangoMes } from '../../../shared/calendario-mes/calendario-mes.component';
@@ -33,6 +34,7 @@ export class CalendarioJefeComponent implements OnInit {
   private readonly turnosService = inject(TurnosService);
   private readonly empleadosService = inject(EmpleadosService);
   private readonly dialog = inject(MatDialog);
+  readonly authService = inject(AuthService);
 
   readonly turnos = signal<Turno[]>([]);
   readonly empleados = signal<Profile[]>([]);
@@ -67,7 +69,7 @@ export class CalendarioJefeComponent implements OnInit {
     const turnosDelDia = this.turnosFiltrados().filter((t) => t.fecha === fecha);
     const ref = this.dialog.open<DiaTurnosComponent, unknown, DiaTurnosResultado>(DiaTurnosComponent, {
       width: '480px',
-      data: { fecha, turnos: turnosDelDia, soloLectura: false },
+      data: { fecha, turnos: turnosDelDia, soloLectura: false, pausada: this.authService.empresaPausada() },
     });
 
     ref.afterClosed().subscribe((resultado) => {

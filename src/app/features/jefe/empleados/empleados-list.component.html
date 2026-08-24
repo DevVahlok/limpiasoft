@@ -1,6 +1,6 @@
 <div class="header">
   <h1>Usuarios</h1>
-  <button mat-flat-button color="primary" (click)="abrirFormulario()">
+  <button mat-flat-button color="primary" *ngIf="!authService.empresaPausada()" (click)="abrirFormulario()">
     <mat-icon>person_add</mat-icon>
     Nuevo usuario
   </button>

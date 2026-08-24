@@ -24,7 +24,12 @@
       <button mat-icon-button (click)="abrirHistorial(f)" aria-label="Ver historial" [disabled]="f.historial.length === 0">
         <mat-icon>history</mat-icon>
       </button>
-      <button mat-icon-button (click)="abrirNuevaTarifa(f)" aria-label="Cambiar tarifa">
+      <button
+        mat-icon-button
+        *ngIf="!authService.empresaPausada()"
+        (click)="abrirNuevaTarifa(f)"
+        aria-label="Cambiar tarifa"
+      >
         <mat-icon>edit</mat-icon>
       </button>
     </td>

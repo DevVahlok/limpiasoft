@@ -7,6 +7,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 
 import { Profile } from '../../../core/auth/auth.models';
+import { AuthService } from '../../../core/auth/auth.service';
 import { FechaEsPipe } from '../../../shared/pipes/fecha-es.pipe';
 import { EmpleadosService } from '../empleados/empleados.service';
 import { HistorialTarifasComponent, HistorialTarifasData } from './historial-tarifas.component';
@@ -39,6 +40,7 @@ export class TarifasListComponent implements OnInit {
   private readonly empleadosService = inject(EmpleadosService);
   private readonly tarifasService = inject(TarifasService);
   private readonly dialog = inject(MatDialog);
+  readonly authService = inject(AuthService);
 
   readonly filas = signal<FilaTarifa[]>([]);
   readonly loading = signal(true);

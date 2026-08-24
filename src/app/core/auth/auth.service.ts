@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 
 import { SupabaseService } from '../supabase/supabase.service';
 import { Profile } from './auth.models';
@@ -31,6 +31,7 @@ export class AuthService {
 
   readonly profile = signal<Profile | null>(null);
   readonly loading = signal(true);
+  readonly empresaPausada = computed(() => this.profile()?.empresa?.pausada ?? false);
 
   async restoreSession(): Promise<void> {
     const { data } = await this.supabase.auth.getSession();

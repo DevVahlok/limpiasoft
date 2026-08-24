@@ -8,7 +8,7 @@
         <mat-option *ngFor="let e of empleados()" [value]="e.id">{{ e.nombre_completo }}</mat-option>
       </mat-select>
     </mat-form-field>
-    <button mat-flat-button color="primary" (click)="abrirNuevoTurno()">
+    <button mat-flat-button color="primary" *ngIf="!authService.empresaPausada()" (click)="abrirNuevoTurno()">
       <mat-icon>event_available</mat-icon>
       Nuevo turno
     </button>

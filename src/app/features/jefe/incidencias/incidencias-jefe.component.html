@@ -34,13 +34,19 @@
   <ng-container matColumnDef="estado">
     <th mat-header-cell *matHeaderCellDef>Estado</th>
     <td mat-cell *matCellDef="let i" class="celda-estado">
-      <mat-form-field appearance="outline" class="select-estado" subscriptSizing="dynamic">
+      <mat-form-field
+        *ngIf="!authService.empresaPausada(); else soloEstado"
+        appearance="outline"
+        class="select-estado"
+        subscriptSizing="dynamic"
+      >
         <mat-select [value]="i.estado" (selectionChange)="cambiarEstado(i, $event.value)">
           <mat-option value="pendiente">Pendiente</mat-option>
           <mat-option value="revisada">Revisada</mat-option>
           <mat-option value="resuelta">Resuelta</mat-option>
         </mat-select>
       </mat-form-field>
+      <ng-template #soloEstado>{{ etiquetasEstado[i.estado] }}</ng-template>
     </td>
   </ng-container>
 

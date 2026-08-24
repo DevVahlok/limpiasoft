@@ -8,6 +8,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 
 import { Profile } from '../../../core/auth/auth.models';
+import { AuthService } from '../../../core/auth/auth.service';
 import { EmpleadoFormComponent, EmpleadoFormResultado } from './empleado-form.component';
 import { EmpleadosService } from './empleados.service';
 
@@ -30,6 +31,7 @@ export class EmpleadosListComponent implements OnInit {
   private readonly empleadosService = inject(EmpleadosService);
   private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
+  readonly authService = inject(AuthService);
 
   readonly empleados = signal<Profile[]>([]);
   readonly loading = signal(true);
