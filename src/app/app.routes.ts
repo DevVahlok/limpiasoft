@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 
+import { adminGuard } from './core/admin/admin.guard';
 import { authGuard } from './core/auth/auth.guard';
 import { roleGuard } from './core/auth/role.guard';
 
@@ -12,6 +13,15 @@ export const appRoutes: Routes = [
     path: 'registro',
     loadComponent: () =>
       import('./features/auth/registro-empresa/registro-empresa.component').then((m) => m.RegistroEmpresaComponent),
+  },
+  {
+    path: 'admin/login',
+    loadComponent: () => import('./features/admin/admin-login/admin-login.component').then((m) => m.AdminLoginComponent),
+  },
+  {
+    path: 'admin',
+    canActivate: [adminGuard],
+    loadChildren: () => import('./features/admin/admin.routes').then((m) => m.adminRoutes),
   },
   {
     path: 'jefe',

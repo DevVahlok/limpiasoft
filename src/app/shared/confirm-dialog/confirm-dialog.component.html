@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>{{ data.titulo }}</h2>
+
+<div mat-dialog-content>
+  <p>{{ data.mensaje }}</p>
+
+  <mat-form-field appearance="outline" class="full-width" *ngIf="data.textoParaConfirmar">
+    <mat-label>Escribe "{{ data.textoParaConfirmar }}" para confirmar</mat-label>
+    <input matInput [(ngModel)]="textoEscrito" autocomplete="off" />
+  </mat-form-field>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+  <button mat-flat-button color="warn" type="button" [disabled]="!puedeConfirmar" (click)="confirmar()">
+    Confirmar
+  </button>
+</div>

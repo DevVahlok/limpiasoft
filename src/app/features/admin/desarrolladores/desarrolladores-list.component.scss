@@ -1,0 +1,19 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+table {
+  width: 100%;
+}
+
+.acciones {
+  text-align: right;
+}
+
+.empty {
+  color: #757575;
+  margin-top: 24px;
+}

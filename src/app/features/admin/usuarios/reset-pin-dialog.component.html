@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>Resetear PIN de {{ data.nombreCompleto }}</h2>
+
+<form [formGroup]="form" (ngSubmit)="guardar()">
+  <div mat-dialog-content class="fields">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nuevo PIN</mat-label>
+      <input matInput type="password" formControlName="pin" inputmode="numeric" maxlength="4" />
+    </mat-form-field>
+
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+  </div>
+
+  <div mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+    <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || guardando">
+      <mat-spinner *ngIf="guardando" diameter="18"></mat-spinner>
+      <span *ngIf="!guardando">Resetear</span>
+    </button>
+  </div>
+</form>

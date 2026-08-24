@@ -1,0 +1,46 @@
+<div class="header">
+  <h1>Desarrolladores</h1>
+  <button mat-flat-button color="primary" (click)="abrirFormulario(null)">
+    <mat-icon>person_add</mat-icon>
+    Nuevo desarrollador
+  </button>
+</div>
+
+<mat-spinner *ngIf="loading()" diameter="32"></mat-spinner>
+
+<table mat-table [dataSource]="desarrolladores()" *ngIf="!loading()" class="mat-elevation-z1">
+  <ng-container matColumnDef="nombre_completo">
+    <th mat-header-cell *matHeaderCellDef>Nombre</th>
+    <td mat-cell *matCellDef="let d">{{ d.nombre_completo }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef>Email</th>
+    <td mat-cell *matCellDef="let d">{{ d.email }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="acciones">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let d" class="acciones">
+      <button mat-icon-button (click)="abrirFormulario(d)" aria-label="Editar desarrollador">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button (click)="resetearPassword(d)" aria-label="Resetear contraseña">
+        <mat-icon>lock_reset</mat-icon>
+      </button>
+      <button
+        mat-icon-button
+        (click)="eliminar(d)"
+        [disabled]="d.id === miPropioId"
+        [attr.aria-label]="d.id === miPropioId ? 'No puedes borrar tu propia cuenta' : 'Eliminar desarrollador'"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+  <tr mat-row *matRowDef="let row; columns: columnas"></tr>
+</table>
+
+<p *ngIf="!loading() && desarrolladores().length === 0" class="empty">Todavía no hay desarrolladores dados de alta.</p>

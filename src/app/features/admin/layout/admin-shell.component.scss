@@ -1,0 +1,39 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.logo-icon {
+  height: 38px;
+  width: 38px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 50%;
+  padding: 3px;
+  box-sizing: border-box;
+  margin-right: 10px;
+}
+
+.modo-label {
+  margin-left: 8px;
+}
+
+.user-label {
+  margin-right: 12px;
+  font-size: 14px;
+}
+
+.shell-container {
+  height: calc(100vh - 64px);
+}
+
+.sidenav {
+  width: 240px;
+}
+
+.active-link {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.content {
+  padding: 24px;
+}

@@ -1,0 +1,25 @@
+<mat-toolbar color="primary">
+  <img src="assets/img/logo-icon.png" alt="" class="logo-icon" />
+  <span>Limpiasoft</span>
+  <span class="modo-label">· Desarrolladores</span>
+  <span class="spacer"></span>
+  <span class="user-label">{{ admin()?.nombre_completo }}</span>
+  <button mat-icon-button (click)="logout()" aria-label="Cerrar sesión">
+    <mat-icon>logout</mat-icon>
+  </button>
+</mat-toolbar>
+
+<mat-sidenav-container class="shell-container">
+  <mat-sidenav mode="side" opened class="sidenav">
+    <mat-nav-list>
+      <a mat-list-item *ngFor="let link of links" [routerLink]="link.path" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>{{ link.icon }}</mat-icon>
+        <span matListItemTitle>{{ link.label }}</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="content">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

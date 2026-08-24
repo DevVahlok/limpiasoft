@@ -1,0 +1,42 @@
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, #eef3f9 0%, #e3eef2 100%);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 380px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.logo {
+  width: 220px;
+  max-width: 80%;
+  height: auto;
+  margin: -16px 0 -8px;
+}
+
+h1 {
+  align-self: flex-start;
+}
+
+form {
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.error {
+  color: #d32f2f;
+  font-size: 13px;
+  margin: 0 0 8px;
+}
