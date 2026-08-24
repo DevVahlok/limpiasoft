@@ -1,0 +1,43 @@
+<h2 mat-dialog-title>Nueva incidencia</h2>
+
+<form [formGroup]="form" (ngSubmit)="guardar()">
+  <div mat-dialog-content class="fields">
+    <mat-spinner *ngIf="cargandoTurnos" diameter="28"></mat-spinner>
+
+    <ng-container *ngIf="!cargandoTurnos">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Turno relacionado (opcional)</mat-label>
+        <mat-select formControlName="turno_id">
+          <mat-option value="">Sin turno asociado</mat-option>
+          <mat-option *ngFor="let t of turnos" [value]="t.id">
+            {{ t.fecha | fechaEs }} · {{ t.puesto?.nombre || '—' }} ({{ t.hora_inicio.slice(0, 5) }}–{{ t.hora_fin.slice(0, 5) }})
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Tipo</mat-label>
+        <mat-select formControlName="tipo">
+          <mat-option value="ausencia">Ausencia</mat-option>
+          <mat-option value="problema_sitio">Problema en el sitio</mat-option>
+          <mat-option value="otro">Otro</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput formControlName="descripcion" rows="3" placeholder="Describe qué ha pasado..."></textarea>
+      </mat-form-field>
+
+      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+    </ng-container>
+  </div>
+
+  <div mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+    <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || guardando || cargandoTurnos">
+      <mat-spinner *ngIf="guardando" diameter="18"></mat-spinner>
+      <span *ngIf="!guardando">Guardar</span>
+    </button>
+  </div>
+</form>

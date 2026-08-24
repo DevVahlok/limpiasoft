@@ -1,0 +1,10 @@
+<div class="selector-mes">
+  <button mat-icon-button (click)="irMesAnterior()" aria-label="Mes anterior">
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+  <button mat-button (click)="irHoy()">Hoy</button>
+  <button mat-icon-button (click)="irMesSiguiente()" aria-label="Mes siguiente">
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+  <span class="etiqueta">{{ etiqueta }}</span>
+</div>

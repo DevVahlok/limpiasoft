@@ -39,6 +39,7 @@ export class EmpleadoShellComponent {
   readonly links = [
     { path: 'calendario', label: 'Mi calendario', icon: 'calendar_month' },
     { path: 'incidencias', label: 'Incidencias', icon: 'report_problem' },
+    { path: 'resumen', label: 'Mi resumen', icon: 'summarize' },
   ];
 
   cambiarPin(): void {

@@ -1,0 +1,68 @@
+<div class="header">
+  <h1>Mi resumen mensual</h1>
+  <app-selector-mes [mes]="mes" (mesChange)="onMesChange($event)"></app-selector-mes>
+</div>
+
+<mat-spinner *ngIf="loading()" diameter="32"></mat-spinner>
+
+<div class="tarjetas" *ngIf="!loading()">
+  <div class="tarjeta">
+    <span class="valor">{{ horasPlanificadas().toFixed(2) }} h</span>
+    <span class="etiqueta">Horas planificadas</span>
+  </div>
+  <div class="tarjeta tarjeta-completadas">
+    <span class="valor">{{ horasCompletadas().toFixed(2) }} h</span>
+    <span class="etiqueta">Horas completadas</span>
+  </div>
+  <div class="tarjeta tarjeta-cobrar">
+    <span class="valor">{{ totalACobrar().toFixed(2) }} €</span>
+    <span class="etiqueta">A cobrar este mes</span>
+  </div>
+  <div class="tarjeta tarjeta-prevision">
+    <span class="valor">{{ previsionMes().toFixed(2) }} €</span>
+    <span class="etiqueta">Previsión del mes</span>
+    <span class="subetiqueta">si completas todos los turnos planificados</span>
+  </div>
+</div>
+
+<table mat-table [dataSource]="turnos()" *ngIf="!loading()" class="mat-elevation-z1">
+  <ng-container matColumnDef="fecha">
+    <th mat-header-cell *matHeaderCellDef>Fecha</th>
+    <td mat-cell *matCellDef="let t">{{ t.fecha | fechaEs }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="puesto">
+    <th mat-header-cell *matHeaderCellDef>Puesto</th>
+    <td mat-cell *matCellDef="let t">{{ t.puesto?.nombre || '—' }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="horario">
+    <th mat-header-cell *matHeaderCellDef>Horario</th>
+    <td mat-cell *matCellDef="let t">{{ t.hora_inicio.slice(0, 5) }}–{{ t.hora_fin.slice(0, 5) }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="horas">
+    <th mat-header-cell *matHeaderCellDef>Horas</th>
+    <td mat-cell *matCellDef="let t">{{ horas(t).toFixed(2) }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="estado">
+    <th mat-header-cell *matHeaderCellDef>Estado</th>
+    <td mat-cell *matCellDef="let t">
+      <span class="estado" [ngClass]="'estado-' + t.estado">{{ t.estado }}</span>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="importe">
+    <th mat-header-cell *matHeaderCellDef>Importe</th>
+    <td mat-cell *matCellDef="let t">
+      <ng-container *ngIf="importe(t) as imp; else sinImporte">{{ imp.toFixed(2) }} €</ng-container>
+      <ng-template #sinImporte>—</ng-template>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+  <tr mat-row *matRowDef="let row; columns: columnas"></tr>
+</table>
+
+<p *ngIf="!loading() && turnos().length === 0" class="empty">No tienes turnos este mes.</p>

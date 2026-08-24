@@ -1,0 +1,64 @@
+<h2 mat-dialog-title>{{ esEdicion ? 'Editar turno' : 'Nuevo turno' }}</h2>
+
+<form [formGroup]="form" (ngSubmit)="guardar()">
+  <div mat-dialog-content class="fields">
+    <mat-spinner *ngIf="cargandoListas" diameter="28"></mat-spinner>
+
+    <ng-container *ngIf="!cargandoListas">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Empleado</mat-label>
+        <mat-select formControlName="empleado_id">
+          <mat-option *ngFor="let e of empleados" [value]="e.id">{{ e.nombre_completo }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Puesto de trabajo</mat-label>
+        <mat-select formControlName="puesto_id">
+          <mat-option *ngFor="let p of puestos" [value]="p.id">{{ p.nombre }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Fecha</mat-label>
+        <input matInput type="date" formControlName="fecha" />
+      </mat-form-field>
+
+      <div class="horario">
+        <mat-form-field appearance="outline">
+          <mat-label>Hora inicio</mat-label>
+          <input matInput type="time" formControlName="hora_inicio" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Hora fin</mat-label>
+          <input matInput type="time" formControlName="hora_fin" />
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" class="full-width" *ngIf="esEdicion">
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="estado">
+          <mat-option value="programado">Programado</mat-option>
+          <mat-option value="completado">Completado</mat-option>
+          <mat-option value="cancelado">Cancelado</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Notas (opcional)</mat-label>
+        <textarea matInput formControlName="notas" rows="2"></textarea>
+      </mat-form-field>
+
+      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+    </ng-container>
+  </div>
+
+  <div mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+    <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || guardando || cargandoListas">
+      <mat-spinner *ngIf="guardando" diameter="18"></mat-spinner>
+      <span *ngIf="!guardando">Guardar</span>
+    </button>
+  </div>
+</form>

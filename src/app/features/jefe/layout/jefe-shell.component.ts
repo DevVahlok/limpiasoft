@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,6 +10,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 import { AuthService } from '../../../core/auth/auth.service';
+import { IncidenciasService } from '../../../core/incidencias/incidencias.service';
 import { CambiarPinComponent } from '../../../shared/cambiar-pin/cambiar-pin.component';
 
 @Component({
@@ -25,14 +27,16 @@ import { CambiarPinComponent } from '../../../shared/cambiar-pin/cambiar-pin.com
     MatIconModule,
     MatButtonModule,
     MatDialogModule,
+    MatBadgeModule,
   ],
   templateUrl: './jefe-shell.component.html',
   styleUrls: ['./jefe-shell.component.scss'],
 })
-export class JefeShellComponent {
+export class JefeShellComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
   private readonly dialog = inject(MatDialog);
+  readonly incidenciasService = inject(IncidenciasService);
 
   readonly profile = this.authService.profile;
 
@@ -40,9 +44,14 @@ export class JefeShellComponent {
     { path: 'empleados', label: 'Empleados', icon: 'group' },
     { path: 'puestos', label: 'Puestos de trabajo', icon: 'location_on' },
     { path: 'calendario', label: 'Calendario', icon: 'calendar_month' },
+    { path: 'incidencias', label: 'Incidencias', icon: 'report_problem' },
     { path: 'tarifas', label: 'Tarifas', icon: 'payments' },
     { path: 'resumen', label: 'Resumen mensual', icon: 'summarize' },
   ];
+
+  ngOnInit(): void {
+    void this.incidenciasService.refrescarPendientes();
+  }
 
   cambiarPin(): void {
     this.dialog.open(CambiarPinComponent, { width: '360px' });

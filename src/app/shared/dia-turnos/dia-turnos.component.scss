@@ -1,0 +1,47 @@
+.contenido {
+  min-width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.vacio {
+  color: #757575;
+}
+
+.fila-turno {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee;
+  padding: 8px 0;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+}
+
+.estado {
+  font-size: 11px;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.estado-programado {
+  color: #1565c0;
+}
+
+.estado-completado {
+  color: #1e7e34;
+}
+
+.estado-cancelado {
+  color: #b71c1c;
+}
+
+.acciones {
+  display: flex;
+}

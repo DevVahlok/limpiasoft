@@ -1,0 +1,9 @@
+<h1>Mi calendario</h1>
+
+<app-calendario-mes
+  [turnos]="turnos()"
+  [mostrarEmpleado]="false"
+  (mesCambiado)="onMesCambiado($event)"
+  (diaClick)="onDiaClick($event)"
+>
+</app-calendario-mes>

@@ -1,0 +1,41 @@
+<div class="cabecera">
+  <div class="navegacion">
+    <button mat-icon-button (click)="irMesAnterior()" aria-label="Mes anterior">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    <button mat-button (click)="irHoy()">Hoy</button>
+    <button mat-icon-button (click)="irMesSiguiente()" aria-label="Mes siguiente">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+  <h2 class="titulo-mes">{{ etiquetaMes }}</h2>
+</div>
+
+<div class="grid-cabecera">
+  <div class="celda-nombre-dia" *ngFor="let nombre of nombresDia">{{ nombre }}</div>
+</div>
+
+<div class="grid-semana" *ngFor="let semana of semanas">
+  <button
+    type="button"
+    class="celda-dia"
+    *ngFor="let dia of semana"
+    [class.fuera-de-mes]="!dia.enMesActual"
+    [class.es-hoy]="dia.esHoy"
+    (click)="diaClick.emit(dia.iso)"
+  >
+    <span class="numero-dia">{{ dia.numero }}</span>
+    <div class="chips-turnos">
+      <span
+        class="chip-turno"
+        *ngFor="let turno of dia.turnos.slice(0, 3)"
+        [class.chip-completado]="turno.estado === 'completado'"
+        [class.chip-cancelado]="turno.estado === 'cancelado'"
+        [title]="etiquetaChip(turno)"
+      >
+        {{ etiquetaChip(turno) }}
+      </span>
+      <span class="chip-mas" *ngIf="dia.turnos.length > 3">+{{ dia.turnos.length - 3 }} más</span>
+    </div>
+  </button>
+</div>

@@ -1,0 +1,15 @@
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 300px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.error {
+  color: #d32f2f;
+  font-size: 13px;
+}

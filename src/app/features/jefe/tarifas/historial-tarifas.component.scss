@@ -1,0 +1,38 @@
+.contenido {
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fila {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid #eee;
+  padding: 6px 0;
+  font-size: 14px;
+}
+
+.importe {
+  font-weight: 600;
+}
+
+.fecha {
+  color: #757575;
+  font-size: 12px;
+}
+
+.etiqueta-actual {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 600;
+  color: #1e7e34;
+  background: #e6f4ea;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.vacio {
+  color: #757575;
+}

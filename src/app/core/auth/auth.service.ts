@@ -87,7 +87,11 @@ export class AuthService {
   }
 
   private async loadProfile(userId: string): Promise<void> {
-    const { data, error } = await this.supabase.from('profiles').select('*').eq('id', userId).single();
+    const { data, error } = await this.supabase
+      .from('profiles')
+      .select('*, empresa:empresas(nombre)')
+      .eq('id', userId)
+      .single();
     if (!error && data) {
       this.profile.set(data as Profile);
     }

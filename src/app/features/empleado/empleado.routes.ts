@@ -9,14 +9,16 @@ export const empleadoRoutes: Routes = [
       {
         path: 'calendario',
         loadComponent: () =>
-          import('../../shared/placeholder/placeholder.component').then((m) => m.PlaceholderComponent),
-        data: { title: 'Mi calendario' },
+          import('./calendario/calendario-empleado.component').then((m) => m.CalendarioEmpleadoComponent),
       },
       {
         path: 'incidencias',
         loadComponent: () =>
-          import('../../shared/placeholder/placeholder.component').then((m) => m.PlaceholderComponent),
-        data: { title: 'Incidencias' },
+          import('./incidencias/incidencias-empleado.component').then((m) => m.IncidenciasEmpleadoComponent),
+      },
+      {
+        path: 'resumen',
+        loadComponent: () => import('./resumen/resumen-empleado.component').then((m) => m.ResumenEmpleadoComponent),
       },
     ],
   },

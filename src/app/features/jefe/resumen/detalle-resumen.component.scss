@@ -1,0 +1,17 @@
+.tabla-contenedor {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+}
+
+th,
+td {
+  white-space: nowrap;
+  padding-right: 20px;
+}
+
+.vacio {
+  color: #757575;
+}

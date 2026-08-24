@@ -1,4 +1,30 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+// Paleta basada en el logo de LimpiaSoft: azul marino ("Limpia") + verde-turquesa ("Soft").
+$limpiasoft-primary: mat.define-palette(mat.$blue-palette, 900, 700, 900);
+$limpiasoft-accent: mat.define-palette(mat.$teal-palette, 500, 300, 700);
+$limpiasoft-warn: mat.define-palette(mat.$red-palette);
+
+$limpiasoft-theme: mat.define-light-theme((
+  color: (
+    primary: $limpiasoft-primary,
+    accent: $limpiasoft-accent,
+    warn: $limpiasoft-warn,
+  ),
+  typography: mat.define-typography-config(),
+  density: 0,
+));
+
+@include mat.all-component-themes($limpiasoft-theme);
+
+:root {
+  --limpiasoft-primary: #0d47a1;
+  --limpiasoft-primary-dark: #08306b;
+  --limpiasoft-accent: #009688;
+  --limpiasoft-accent-dark: #00695c;
+}
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

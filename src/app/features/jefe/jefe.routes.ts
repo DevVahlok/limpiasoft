@@ -16,21 +16,21 @@ export const jefeRoutes: Routes = [
       },
       {
         path: 'calendario',
+        loadComponent: () => import('./calendario/calendario-jefe.component').then((m) => m.CalendarioJefeComponent),
+      },
+      {
+        path: 'incidencias',
         loadComponent: () =>
-          import('../../shared/placeholder/placeholder.component').then((m) => m.PlaceholderComponent),
-        data: { title: 'Calendario' },
+          import('./incidencias/incidencias-jefe.component').then((m) => m.IncidenciasJefeComponent),
       },
       {
         path: 'tarifas',
-        loadComponent: () =>
-          import('../../shared/placeholder/placeholder.component').then((m) => m.PlaceholderComponent),
-        data: { title: 'Tarifas' },
+        loadComponent: () => import('./tarifas/tarifas-list.component').then((m) => m.TarifasListComponent),
       },
       {
         path: 'resumen',
         loadComponent: () =>
-          import('../../shared/placeholder/placeholder.component').then((m) => m.PlaceholderComponent),
-        data: { title: 'Resumen mensual' },
+          import('./resumen/resumen-mensual.component').then((m) => m.ResumenMensualComponent),
       },
     ],
   },

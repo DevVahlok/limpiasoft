@@ -1,0 +1,37 @@
+<h1>Tarifas</h1>
+
+<mat-spinner *ngIf="loading()" diameter="32"></mat-spinner>
+
+<table mat-table [dataSource]="filas()" *ngIf="!loading()" class="mat-elevation-z1">
+  <ng-container matColumnDef="nombre">
+    <th mat-header-cell *matHeaderCellDef>Empleado</th>
+    <td mat-cell *matCellDef="let f">{{ f.empleado.nombre_completo }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="actual">
+    <th mat-header-cell *matHeaderCellDef>Tarifa actual</th>
+    <td mat-cell *matCellDef="let f">{{ f.actual ? (f.actual.tarifa_hora + ' €/h') : '—' }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="vigenteDesde">
+    <th mat-header-cell *matHeaderCellDef>Vigente desde</th>
+    <td mat-cell *matCellDef="let f">{{ f.actual?.vigente_desde | fechaEs }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="acciones">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let f" class="acciones">
+      <button mat-icon-button (click)="abrirHistorial(f)" aria-label="Ver historial" [disabled]="f.historial.length === 0">
+        <mat-icon>history</mat-icon>
+      </button>
+      <button mat-icon-button (click)="abrirNuevaTarifa(f)" aria-label="Cambiar tarifa">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+  <tr mat-row *matRowDef="let row; columns: columnas"></tr>
+</table>
+
+<p *ngIf="!loading() && filas().length === 0" class="empty">Todavía no has dado de alta a ningún empleado.</p>

@@ -1,0 +1,39 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+table {
+  width: 100%;
+}
+
+.acciones {
+  text-align: right;
+}
+
+.prevision {
+  color: var(--limpiasoft-accent-dark);
+}
+
+.totales {
+  margin-top: 16px;
+}
+
+.total {
+  margin: 0;
+  font-size: 16px;
+  text-align: right;
+  max-width: 100%;
+}
+
+.total-prevision {
+  font-size: 13px;
+  color: var(--limpiasoft-accent-dark);
+}
+
+.empty {
+  color: #757575;
+  margin-top: 24px;
+}

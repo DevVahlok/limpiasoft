@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>{{ data.fecha | fechaEs }}</h2>
+
+<div mat-dialog-content class="contenido">
+  <p *ngIf="turnos.length === 0" class="vacio">No hay turnos este día.</p>
+
+  <div class="fila-turno" *ngFor="let turno of turnos">
+    <div class="info">
+      <strong>{{ turno.hora_inicio.slice(0, 5) }}–{{ turno.hora_fin.slice(0, 5) }}</strong>
+      <span>{{ turno.empleado?.nombre_completo || '—' }} · {{ turno.puesto?.nombre || '—' }}</span>
+      <span class="estado" [ngClass]="'estado-' + turno.estado">{{ etiquetasEstado[turno.estado] }}</span>
+    </div>
+    <div class="acciones" *ngIf="!data.soloLectura">
+      <button mat-icon-button (click)="editarTurno(turno)" aria-label="Editar turno">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button (click)="eliminar(turno)" aria-label="Eliminar turno">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+    <div class="acciones" *ngIf="data.soloLectura">
+      <button mat-icon-button (click)="reportarIncidencia(turno)" aria-label="Reportar incidencia">
+        <mat-icon>report_problem</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="cerrar()">Cerrar</button>
+  <button mat-flat-button color="primary" *ngIf="!data.soloLectura" (click)="nuevoTurno()">
+    <mat-icon>add</mat-icon>
+    Añadir turno
+  </button>
+</div>

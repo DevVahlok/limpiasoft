@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Cambiar tarifa · {{ data.empleadoNombre }}</h2>
+
+<form [formGroup]="form" (ngSubmit)="guardar()">
+  <div mat-dialog-content class="fields">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Tarifa por hora (€)</mat-label>
+      <input matInput type="number" step="0.5" formControlName="tarifa_hora" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Vigente desde</mat-label>
+      <input matInput type="date" formControlName="vigente_desde" />
+    </mat-form-field>
+
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+  </div>
+
+  <div mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+    <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || guardando">
+      <mat-spinner *ngIf="guardando" diameter="18"></mat-spinner>
+      <span *ngIf="!guardando">Guardar</span>
+    </button>
+  </div>
+</form>

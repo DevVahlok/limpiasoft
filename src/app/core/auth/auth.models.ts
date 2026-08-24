@@ -10,4 +10,5 @@ export interface Profile {
   telefono: string | null;
   activo: boolean;
   created_at: string;
+  empresa: { nombre: string } | null;
 }

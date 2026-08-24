@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Historial de tarifas · {{ data.empleadoNombre }}</h2>
+
+<div mat-dialog-content class="contenido">
+  <div class="fila" *ngFor="let t of data.tarifas; let primero = first">
+    <span class="importe">{{ t.tarifa_hora }} €/h</span>
+    <span class="fecha">desde {{ t.vigente_desde | fechaEs }}</span>
+    <span class="etiqueta-actual" *ngIf="primero">Actual</span>
+  </div>
+  <p *ngIf="data.tarifas.length === 0" class="vacio">Sin tarifas registradas.</p>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cerrar</button>
+</div>

@@ -1,5 +1,7 @@
 <mat-toolbar color="primary">
+  <img src="assets/img/logo-icon.png" alt="" class="logo-icon" />
   <span>Limpiasoft</span>
+  <span class="empresa-label" *ngIf="profile()?.empresa?.nombre">· {{ profile()?.empresa?.nombre }}</span>
   <span class="spacer"></span>
   <span class="user-label">{{ profile()?.nombre_completo }}</span>
   <button mat-icon-button (click)="cambiarPin()" aria-label="Cambiar PIN">

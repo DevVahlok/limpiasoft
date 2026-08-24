@@ -2,6 +2,21 @@
   flex: 1 1 auto;
 }
 
+.logo-icon {
+  height: 38px;
+  width: 38px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 50%;
+  padding: 3px;
+  box-sizing: border-box;
+  margin-right: 10px;
+}
+
+.empresa-label {
+  margin-left: 8px;
+}
+
 .user-label {
   margin-right: 12px;
   font-size: 14px;

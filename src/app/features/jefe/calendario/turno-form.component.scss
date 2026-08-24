@@ -1,0 +1,24 @@
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 340px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.horario {
+  display: flex;
+  gap: 12px;
+}
+
+.horario mat-form-field {
+  flex: 1;
+}
+
+.error {
+  color: #d32f2f;
+  font-size: 13px;
+}
