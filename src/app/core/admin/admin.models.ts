@@ -9,5 +9,6 @@ export interface Empresa {
   id: string;
   nombre: string;
   nif: string | null;
+  pausada: boolean;
   created_at: string;
 }

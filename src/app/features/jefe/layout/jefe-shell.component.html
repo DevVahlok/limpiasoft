@@ -12,6 +12,11 @@
   </button>
 </mat-toolbar>
 
+<div class="banner-pausada" *ngIf="profile()?.empresa?.pausada">
+  <mat-icon>lock</mat-icon>
+  Esta empresa está en modo solo lectura por falta de pago. Contacta con el desarrollador para reactivarla.
+</div>
+
 <mat-sidenav-container class="shell-container">
   <mat-sidenav mode="side" opened class="sidenav">
     <mat-nav-list>

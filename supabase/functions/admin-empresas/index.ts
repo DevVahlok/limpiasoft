@@ -51,7 +51,7 @@ Deno.serve(async (req: Request) => {
     return json({ error: "Solo un desarrollador puede gestionar empresas" }, 403);
   }
 
-  let body: { op?: string; id?: string; nombre?: string; nif?: string };
+  let body: { op?: string; id?: string; nombre?: string; nif?: string; pausada?: boolean };
   try {
     body = await req.json();
   } catch {
@@ -80,7 +80,7 @@ Deno.serve(async (req: Request) => {
       if (!body.id) return json({ error: "id es obligatorio" }, 400);
       const { data, error } = await adminClient
         .from("empresas")
-        .update({ nombre: body.nombre, nif: body.nif })
+        .update({ nombre: body.nombre, nif: body.nif, pausada: body.pausada })
         .eq("id", body.id)
         .select()
         .single();

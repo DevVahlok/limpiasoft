@@ -83,6 +83,18 @@ Deno.serve(async (req: Request) => {
     return json({ error: "Solo un jefe puede dar de alta empleados" }, 403);
   }
 
+  const { data: empresa } = await callerClient
+    .from("empresas")
+    .select("pausada")
+    .eq("id", callerProfile.empresa_id)
+    .single();
+  if (empresa?.pausada) {
+    return json(
+      { error: "Esta empresa está en modo solo lectura por falta de pago. No se pueden crear usuarios nuevos." },
+      403,
+    );
+  }
+
   let body: {
     nombre_completo?: string;
     telefono?: string;

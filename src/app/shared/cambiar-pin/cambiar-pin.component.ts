@@ -46,6 +46,10 @@ export class CambiarPinComponent {
       this.errorMessage = 'Los PIN no coinciden.';
       return;
     }
+    if (this.authService.profile()?.empresa?.pausada) {
+      this.errorMessage = 'No puedes cambiar el PIN mientras la empresa esté en modo solo lectura.';
+      return;
+    }
     this.guardando = true;
     this.errorMessage = null;
     try {

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -24,6 +25,7 @@ import { EmpresaFormComponent, EmpresaFormData } from './empresa-form.component'
     MatDialogModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
+    MatChipsModule,
   ],
   templateUrl: './empresas-list.component.html',
   styleUrls: ['./empresas-list.component.scss'],
@@ -36,7 +38,7 @@ export class EmpresasListComponent implements OnInit {
 
   readonly empresas = signal<Empresa[]>([]);
   readonly loading = signal(true);
-  readonly columnas = ['nombre', 'nif', 'acciones'];
+  readonly columnas = ['nombre', 'nif', 'estado', 'acciones'];
 
   ngOnInit(): void {
     void this.cargar();
@@ -66,6 +68,17 @@ export class EmpresasListComponent implements OnInit {
 
   verUsuarios(empresa: Empresa): void {
     void this.router.navigate(['/admin/empresas', empresa.id, 'usuarios']);
+  }
+
+  async cambiarPausa(empresa: Empresa): Promise<void> {
+    try {
+      await this.empresasService.cambiarPausa(empresa.id, !empresa.pausada);
+      void this.cargar();
+    } catch (err) {
+      this.snackBar.open(err instanceof Error ? err.message : 'No se pudo actualizar la empresa.', 'Cerrar', {
+        duration: 5000,
+      });
+    }
   }
 
   eliminar(empresa: Empresa): void {

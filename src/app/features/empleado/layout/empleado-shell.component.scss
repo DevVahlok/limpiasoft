@@ -1,5 +1,28 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
 .spacer {
   flex: 1 1 auto;
+}
+
+.banner-pausada {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  background: #fff3e0;
+  color: #7a4a00;
+  font-size: 14px;
+  border-bottom: 1px solid #ffe0b2;
+
+  mat-icon {
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
+  }
 }
 
 .logo-icon {
@@ -23,7 +46,8 @@
 }
 
 .shell-container {
-  height: calc(100vh - 64px);
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 .sidenav {

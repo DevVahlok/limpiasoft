@@ -44,4 +44,9 @@ export class AdminEmpresasService {
   async eliminar(id: string): Promise<void> {
     await this.invocar<{ ok: boolean }>({ op: 'delete', id });
   }
+
+  async cambiarPausa(id: string, pausada: boolean): Promise<Empresa> {
+    const { empresa } = await this.invocar<{ empresa: Empresa }>({ op: 'update', id, pausada });
+    return empresa;
+  }
 }
