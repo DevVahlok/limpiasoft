@@ -1,27 +1,90 @@
 # Limpiasoft
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.12.
+Plataforma SaaS para que empresas de limpieza gestionen a su personal: puestos de trabajo, calendario de turnos, incidencias, tarifas por hora y el cálculo mensual de cuánto hay que pagar a cada empleado.
 
-## Development server
+Cada empresa que se registra ve únicamente sus propios datos (multi-tenant con aislamiento por Row Level Security en Postgres). Dentro de cada empresa hay dos roles: **jefe** (gestiona todo) y **empleado** (ve su propio calendario, reporta incidencias y consulta lo que va a cobrar).
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Stack técnico
 
-## Code scaffolding
+- **Frontend**: Angular 16 (standalone components, sin NgModules), Angular Material.
+- **Backend**: [Supabase](https://supabase.com) — Postgres con Row Level Security, Supabase Auth, y dos Edge Functions (Deno) para las operaciones que requieren privilegios de administrador.
+- **Sin backend propio**: el cliente Angular habla directamente con Supabase (PostgREST) respetando las políticas RLS; las Edge Functions solo se usan donde hace falta la Admin API (creación de cuentas).
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Autenticación: usuario + PIN, no email
 
-## Build
+El login no usa un email real: cada persona tiene un **usuario** (`nombre.apellido`, generado automáticamente y con sufijo numérico si ya existe) y un **PIN de 4 dígitos** (por defecto `0000`, cambiable desde la propia app). Fue una decisión de producto para que el personal de limpieza pueda entrar rápido sin depender de un correo.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Por debajo, Supabase Auth sigue exigiendo un email y una contraseña con longitud mínima, así que se codifican de forma interna y transparente para el usuario:
 
-## Running unit tests
+- Email interno: `usuario@limpiasoft.app` (nunca se envía correo a ese dominio).
+- Contraseña interna: `lsft-<PIN>`.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Tanto el alta de una empresa nueva como el alta de un empleado se hacen a través de **Edge Functions con la Admin API** (`registrar-empresa`, `crear-empleado`), nunca con el `signUp()` público del cliente: así se evita depender de confirmaciones por email y de los límites de envío del mailer de pruebas de Supabase, y permite validar en el servidor (nunca confiando en el cliente) quién puede dar de alta a quién.
 
-## Running end-to-end tests
+## Modelo de datos y seguridad
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Todo el aislamiento entre empresas y entre roles se hace con políticas **RLS** en Postgres (no hay comprobaciones de permisos "a mano" en el frontend salvo los guards de rutas, que son solo para la UX — la seguridad real está en la base de datos).
 
-## Further help
+| Tabla | Qué guarda | Quién puede leer/escribir |
+|---|---|---|
+| `empresas` | Cada empresa registrada | El jefe ve/edita la suya |
+| `profiles` | Perfil de cada usuario (1:1 con `auth.users`): rol, nombre, username, empresa | Cada uno ve el suyo; el jefe ve los de su empresa |
+| `puestos_trabajo` | Localizaciones/clientes a limpiar | Jefe: todo. Empleado: solo lectura de los de su empresa |
+| `tarifas` | Historial de tarifa €/h por empleado (con fecha de vigencia, no un valor único) | Jefe: todo. Empleado: solo lectura de la suya |
+| `turnos` | Calendario: empleado + puesto + fecha + horario + estado (`programado`/`completado`/`cancelado`) | Jefe: todo. Empleado: solo lectura de los suyos |
+| `incidencias` | Reportes de problemas del empleado, opcionalmente ligados a un turno | Empleado: lee/crea las suyas. Jefe: lee/revisa las de su empresa |
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+El historial de tarifas existe porque el resumen mensual necesita saber qué tarifa estaba vigente en la fecha de cada turno, no solo la actual (un cambio de sueldo a mitad de mes no debe recalcular retroactivamente lo ya trabajado).
+
+El SQL de todas las migraciones está versionado en [`supabase/migrations/`](supabase/migrations), y el código de las Edge Functions en [`supabase/functions/`](supabase/functions).
+
+## Funcionalidades
+
+### Vista del jefe
+- **Empleados**: alta (genera usuario + PIN inicial), listado.
+- **Puestos de trabajo**: alta, edición, activar/desactivar.
+- **Calendario**: vista mensual con los turnos de todos los empleados; asignar/editar/eliminar turnos; marcarlos como completados.
+- **Incidencias**: todas las de la empresa, con fecha, puesto y empleado; cambiar su estado (pendiente/revisada/resuelta); badge en el menú con el número de pendientes.
+- **Tarifas**: tarifa actual por empleado + historial completo; registrar un cambio de tarifa (nunca sobrescribe, añade una nueva entrada).
+- **Resumen mensual**: por empleado, horas trabajadas, total a pagar (solo turnos completados, a la tarifa vigente en cada fecha) y previsión del mes si se completan también los turnos aún programados.
+
+### Vista del empleado
+- **Mi calendario**: sus propios turnos (puesto + horario, sin verse a sí mismo listado como en la vista del jefe); acceso directo a "Reportar incidencia" desde un turno.
+- **Incidencias**: reportar una nueva (opcionalmente ligada a un turno) y ver el estado de las que ha reportado.
+- **Mi resumen mensual**: horas planificadas vs. completadas, cuánto va a cobrar ya (turnos completados) y la previsión si completa todo el mes.
+
+Ambos roles pueden cambiar su propio PIN desde la barra superior.
+
+## Estructura del proyecto
+
+```
+src/app/
+  core/            servicios de datos compartidos (auth, supabase client, turnos, tarifas, incidencias)
+  shared/          componentes reutilizables entre jefe y empleado (calendario mensual, selector de mes,
+                   diálogo de turnos del día, pipe de formato de fecha, cambiar PIN)
+  features/
+    auth/          login, registro de empresa
+    jefe/          empleados, puestos, calendario, incidencias, tarifas, resumen — y su layout/menú
+    empleado/      calendario, incidencias, resumen — y su layout/menú
+supabase/
+  migrations/      SQL de cada cambio de esquema, en orden
+  functions/       código fuente de las Edge Functions (registrar-empresa, crear-empleado)
+```
+
+## Desarrollo
+
+```bash
+npm install
+ng serve
+```
+
+Abre `http://localhost:4200`. La configuración de conexión a Supabase (URL y clave pública) está en `src/environments/environment.ts` — la clave es la `publishable key`, segura para exponer en el cliente porque todo el acceso a datos pasa por RLS.
+
+### Aplicar el esquema a un proyecto Supabase nuevo
+
+Las migraciones en `supabase/migrations/` están pensadas para aplicarse en orden con la [CLI de Supabase](https://supabase.com/docs/guides/cli) (`supabase db push`) o pegándolas una a una en el SQL Editor del dashboard. Las Edge Functions de `supabase/functions/` se despliegan con `supabase functions deploy <nombre>`.
+
+### Comandos de Angular CLI
+
+- `ng build` — compila a `dist/`.
+- `ng test` — tests unitarios con Karma.
