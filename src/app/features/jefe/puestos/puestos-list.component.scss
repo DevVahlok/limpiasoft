@@ -1,0 +1,29 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+table {
+  width: 100%;
+}
+
+.acciones {
+  text-align: right;
+}
+
+.empty {
+  color: #757575;
+  margin-top: 24px;
+}
+
+.chip-activo {
+  background-color: #e6f4ea !important;
+  color: #1e7e34 !important;
+}
+
+.chip-inactivo {
+  background-color: #f1f1f1 !important;
+  color: #757575 !important;
+}

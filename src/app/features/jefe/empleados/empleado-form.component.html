@@ -1,0 +1,36 @@
+<h2 mat-dialog-title>Nuevo empleado</h2>
+
+<form [formGroup]="form" (ngSubmit)="guardar()">
+  <div mat-dialog-content class="fields">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nombre completo</mat-label>
+      <input matInput formControlName="nombreCompleto" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Teléfono (opcional)</mat-label>
+      <input matInput formControlName="telefono" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Tarifa por hora (€)</mat-label>
+      <input matInput type="number" step="0.5" formControlName="tarifaHora" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>PIN inicial</mat-label>
+      <input matInput type="password" formControlName="pin" inputmode="numeric" maxlength="4" />
+    </mat-form-field>
+    <p class="hint">El usuario se generará automáticamente a partir del nombre.</p>
+
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+  </div>
+
+  <div mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+    <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || guardando">
+      <mat-spinner *ngIf="guardando" diameter="18"></mat-spinner>
+      <span *ngIf="!guardando">Crear</span>
+    </button>
+  </div>
+</form>

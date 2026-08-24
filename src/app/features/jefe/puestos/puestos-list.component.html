@@ -1,0 +1,45 @@
+<div class="header">
+  <h1>Puestos de trabajo</h1>
+  <button mat-flat-button color="primary" (click)="abrirFormulario(null)">
+    <mat-icon>add_location_alt</mat-icon>
+    Nuevo puesto
+  </button>
+</div>
+
+<mat-spinner *ngIf="loading()" diameter="32"></mat-spinner>
+
+<table mat-table [dataSource]="puestos()" *ngIf="!loading()" class="mat-elevation-z1">
+  <ng-container matColumnDef="nombre">
+    <th mat-header-cell *matHeaderCellDef>Nombre</th>
+    <td mat-cell *matCellDef="let p">{{ p.nombre }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="direccion">
+    <th mat-header-cell *matHeaderCellDef>Dirección</th>
+    <td mat-cell *matCellDef="let p">{{ p.direccion || '—' }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="activo">
+    <th mat-header-cell *matHeaderCellDef>Estado</th>
+    <td mat-cell *matCellDef="let p">
+      <mat-chip [ngClass]="p.activo ? 'chip-activo' : 'chip-inactivo'">{{ p.activo ? 'Activo' : 'Inactivo' }}</mat-chip>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="acciones">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let p" class="acciones">
+      <button mat-icon-button (click)="abrirFormulario(p)" aria-label="Editar puesto">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button (click)="cambiarActivo(p)" [attr.aria-label]="p.activo ? 'Desactivar puesto' : 'Activar puesto'">
+        <mat-icon>{{ p.activo ? 'toggle_on' : 'toggle_off' }}</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+  <tr mat-row *matRowDef="let row; columns: columnas"></tr>
+</table>
+
+<p *ngIf="!loading() && puestos().length === 0" class="empty">Todavía no has creado ningún puesto de trabajo.</p>

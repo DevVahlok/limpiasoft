@@ -1,0 +1,24 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.user-label {
+  margin-right: 12px;
+  font-size: 14px;
+}
+
+.shell-container {
+  height: calc(100vh - 64px);
+}
+
+.sidenav {
+  width: 240px;
+}
+
+.active-link {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.content {
+  padding: 24px;
+}
