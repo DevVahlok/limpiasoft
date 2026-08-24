@@ -33,6 +33,7 @@ Todo el aislamiento entre empresas y entre roles se hace con políticas **RLS** 
 | `tarifas` | Historial de tarifa €/h por empleado (con fecha de vigencia, no un valor único) | Jefe: todo. Empleado: solo lectura de la suya |
 | `turnos` | Calendario: empleado + puesto + fecha + horario + estado (`programado`/`completado`/`cancelado`) | Jefe: todo. Empleado: solo lectura de los suyos |
 | `incidencias` | Reportes de problemas del empleado, opcionalmente ligados a un turno | Empleado: lee/crea las suyas. Jefe: lee/revisa las de su empresa |
+| `app_admins` | Cuentas de desarrollador (ver más abajo), sin relación con ninguna empresa | Cada desarrollador solo puede leer su propia fila; el resto de operaciones pasan por Edge Functions |
 
 El historial de tarifas existe porque el resumen mensual necesita saber qué tarifa estaba vigente en la fecha de cada turno, no solo la actual (un cambio de sueldo a mitad de mes no debe recalcular retroactivamente lo ya trabajado).
 
@@ -41,7 +42,7 @@ El SQL de todas las migraciones está versionado en [`supabase/migrations/`](sup
 ## Funcionalidades
 
 ### Vista del jefe
-- **Empleados**: alta (genera usuario + PIN inicial), listado.
+- **Usuarios**: alta de empleados y de otros jefes (genera usuario + PIN inicial), listado.
 - **Puestos de trabajo**: alta, edición, activar/desactivar.
 - **Calendario**: vista mensual con los turnos de todos los empleados; asignar/editar/eliminar turnos; marcarlos como completados.
 - **Incidencias**: todas las de la empresa, con fecha, puesto y empleado; cambiar su estado (pendiente/revisada/resuelta); badge en el menú con el número de pendientes.
@@ -55,17 +56,28 @@ El SQL de todas las migraciones está versionado en [`supabase/migrations/`](sup
 
 Ambos roles pueden cambiar su propio PIN desde la barra superior.
 
+### Vista de desarrolladores
+
+Capa aparte, pensada para quien mantiene la aplicación, no para el personal de las empresas clientas. Vive en `/admin` (login en `/admin/login`, no enlazado desde ningún sitio visible de la app) y usa **email + contraseña reales** (Supabase Auth estándar), no el usuario+PIN del resto de la app — es la cuenta con más privilegios de todo el sistema.
+
+- **Empresas**: alta, edición, y borrado (con confirmación escribiendo el nombre de la empresa, ya que se lleva por delante todos sus usuarios, turnos, tarifas e incidencias).
+- **Usuarios de una empresa**: alta de jefes o empleados de cualquier empresa, edición, activar/desactivar, resetear PIN, borrado.
+- **Desarrolladores**: alta de otras cuentas de desarrollador, resetear su contraseña, borrado (un desarrollador no puede borrar su propia cuenta).
+
+Todas estas operaciones se hacen con `service_role` desde Edge Functions dedicadas (`admin-empresas`, `admin-usuarios`, `admin-desarrolladores`), no ampliando las políticas RLS de `jefe`/`empleado` — un desarrollador nunca consulta las tablas de negocio directamente con su propia sesión.
+
 ## Estructura del proyecto
 
 ```
 src/app/
-  core/            servicios de datos compartidos (auth, supabase client, turnos, tarifas, incidencias)
+  core/            servicios de datos compartidos (auth, admin, supabase client, turnos, tarifas, incidencias)
   shared/          componentes reutilizables entre jefe y empleado (calendario mensual, selector de mes,
-                   diálogo de turnos del día, pipe de formato de fecha, cambiar PIN)
+                   diálogo de turnos del día, pipe de formato de fecha, cambiar PIN, confirm-dialog)
   features/
     auth/          login, registro de empresa
-    jefe/          empleados, puestos, calendario, incidencias, tarifas, resumen — y su layout/menú
+    jefe/          usuarios, puestos, calendario, incidencias, tarifas, resumen — y su layout/menú
     empleado/      calendario, incidencias, resumen — y su layout/menú
+    admin/         login, empresas, usuarios, desarrolladores — y su layout/menú
 supabase/
   migrations/      SQL de cada cambio de esquema, en orden
   functions/       código fuente de las Edge Functions (registrar-empresa, crear-empleado)
