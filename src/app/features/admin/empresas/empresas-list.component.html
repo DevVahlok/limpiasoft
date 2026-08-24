@@ -19,6 +19,11 @@
     <td mat-cell *matCellDef="let e">{{ e.nif || '—' }}</td>
   </ng-container>
 
+  <ng-container matColumnDef="precio">
+    <th mat-header-cell *matHeaderCellDef>Precio/mes</th>
+    <td mat-cell *matCellDef="let e">{{ e.precio_mensual | number: '1.2-2' }} €</td>
+  </ng-container>
+
   <ng-container matColumnDef="estado">
     <th mat-header-cell *matHeaderCellDef>Estado</th>
     <td mat-cell *matCellDef="let e">

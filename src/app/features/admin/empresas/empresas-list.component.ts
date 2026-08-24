@@ -38,7 +38,7 @@ export class EmpresasListComponent implements OnInit {
 
   readonly empresas = signal<Empresa[]>([]);
   readonly loading = signal(true);
-  readonly columnas = ['nombre', 'nif', 'estado', 'acciones'];
+  readonly columnas = ['nombre', 'nif', 'precio', 'estado', 'acciones'];
 
   ngOnInit(): void {
     void this.cargar();

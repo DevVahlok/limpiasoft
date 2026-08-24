@@ -10,5 +10,16 @@ export interface Empresa {
   nombre: string;
   nif: string | null;
   pausada: boolean;
+  precio_mensual: number;
   created_at: string;
+}
+
+export interface Pago {
+  id: string;
+  empresa_id: string;
+  importe: number;
+  fecha: string;
+  notas: string | null;
+  created_at: string;
+  empresa: { nombre: string } | null;
 }

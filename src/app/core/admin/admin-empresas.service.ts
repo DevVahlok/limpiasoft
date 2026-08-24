@@ -7,6 +7,7 @@ import { Empresa } from './admin.models';
 export interface EmpresaFormParams {
   nombre: string;
   nif?: string;
+  precio_mensual?: number;
 }
 
 @Injectable({ providedIn: 'root' })

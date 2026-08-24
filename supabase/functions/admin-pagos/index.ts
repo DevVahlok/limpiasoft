@@ -48,17 +48,10 @@ Deno.serve(async (req: Request) => {
     .eq("id", userData.user.id)
     .maybeSingle();
   if (!caller) {
-    return json({ error: "Solo un desarrollador puede gestionar empresas" }, 403);
+    return json({ error: "Solo un desarrollador puede gestionar pagos" }, 403);
   }
 
-  let body: {
-    op?: string;
-    id?: string;
-    nombre?: string;
-    nif?: string;
-    pausada?: boolean;
-    precio_mensual?: number;
-  };
+  let body: { op?: string; id?: string; empresa_id?: string; importe?: number; fecha?: string; notas?: string };
   try {
     body = await req.json();
   } catch {
@@ -67,54 +60,43 @@ Deno.serve(async (req: Request) => {
 
   switch (body.op) {
     case "list": {
-      const { data, error } = await adminClient.from("empresas").select("*").order("nombre");
+      const { data, error } = await adminClient
+        .from("pagos")
+        .select("*, empresa:empresas(nombre)")
+        .order("fecha", { ascending: false });
       if (error) return json({ error: error.message }, 400);
-      return json({ empresas: data });
+      return json({ pagos: data });
     }
 
     case "create": {
-      if (!body.nombre) return json({ error: "nombre es obligatorio" }, 400);
+      if (!body.empresa_id || typeof body.importe !== "number") {
+        return json({ error: "empresa_id e importe son obligatorios" }, 400);
+      }
       const { data, error } = await adminClient
-        .from("empresas")
-        .insert({ nombre: body.nombre, nif: body.nif, precio_mensual: body.precio_mensual })
-        .select()
+        .from("pagos")
+        .insert({ empresa_id: body.empresa_id, importe: body.importe, fecha: body.fecha, notas: body.notas })
+        .select("*, empresa:empresas(nombre)")
         .single();
       if (error) return json({ error: error.message }, 400);
-      return json({ empresa: data });
+      return json({ pago: data });
     }
 
     case "update": {
       if (!body.id) return json({ error: "id es obligatorio" }, 400);
       const { data, error } = await adminClient
-        .from("empresas")
-        .update({ nombre: body.nombre, nif: body.nif, pausada: body.pausada, precio_mensual: body.precio_mensual })
+        .from("pagos")
+        .update({ importe: body.importe, fecha: body.fecha, notas: body.notas })
         .eq("id", body.id)
-        .select()
+        .select("*, empresa:empresas(nombre)")
         .single();
       if (error) return json({ error: error.message }, 400);
-      return json({ empresa: data });
+      return json({ pago: data });
     }
 
     case "delete": {
       if (!body.id) return json({ error: "id es obligatorio" }, 400);
-
-      // profiles.id referencia auth.users(id), no al revés: borrar la fila de
-      // empresas en cascada dejaría cuentas de auth.users huérfanas (sin perfil
-      // pero aún capaces de autenticarse). Hay que borrar cada usuario vía Admin
-      // API primero (eso sí cascada correctamente a profiles/tarifas/turnos/
-      // incidencias) y solo entonces la empresa.
-      const { data: perfiles, error: perfilesError } = await adminClient
-        .from("profiles")
-        .select("id")
-        .eq("empresa_id", body.id);
-      if (perfilesError) return json({ error: perfilesError.message }, 400);
-
-      for (const perfil of perfiles ?? []) {
-        await adminClient.auth.admin.deleteUser(perfil.id);
-      }
-
-      const { error: deleteError } = await adminClient.from("empresas").delete().eq("id", body.id);
-      if (deleteError) return json({ error: deleteError.message }, 400);
+      const { error } = await adminClient.from("pagos").delete().eq("id", body.id);
+      if (error) return json({ error: error.message }, 400);
       return json({ ok: true });
     }
 

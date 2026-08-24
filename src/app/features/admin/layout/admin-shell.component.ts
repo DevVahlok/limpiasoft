@@ -34,6 +34,7 @@ export class AdminShellComponent {
 
   readonly links = [
     { path: 'empresas', label: 'Empresas', icon: 'business' },
+    { path: 'ingresos', label: 'Ingresos', icon: 'payments' },
     { path: 'desarrolladores', label: 'Desarrolladores', icon: 'code' },
   ];
 

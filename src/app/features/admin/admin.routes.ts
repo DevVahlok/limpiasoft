@@ -19,6 +19,10 @@ export const adminRoutes: Routes = [
         loadComponent: () =>
           import('./desarrolladores/desarrolladores-list.component').then((m) => m.DesarrolladoresListComponent),
       },
+      {
+        path: 'ingresos',
+        loadComponent: () => import('./ingresos/ingresos.component').then((m) => m.IngresosComponent),
+      },
     ],
   },
 ];

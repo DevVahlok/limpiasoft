@@ -34,6 +34,7 @@ Todo el aislamiento entre empresas y entre roles se hace con políticas **RLS** 
 | `turnos` | Calendario: empleado + puesto + fecha + horario + estado (`programado`/`completado`/`cancelado`) | Jefe: todo. Empleado: solo lectura de los suyos |
 | `incidencias` | Reportes de problemas del empleado, opcionalmente ligados a un turno | Empleado: lee/crea las suyas. Jefe: lee/revisa las de su empresa |
 | `app_admins` | Cuentas de desarrollador (ver más abajo), sin relación con ninguna empresa | Cada desarrollador solo puede leer su propia fila; el resto de operaciones pasan por Edge Functions |
+| `pagos` | Pagos reales registrados a mano por el desarrollador (empresa, importe, fecha, notas) | Sin políticas RLS: solo accesible vía Edge Function con `service_role` |
 
 El historial de tarifas existe porque el resumen mensual necesita saber qué tarifa estaba vigente en la fecha de cada turno, no solo la actual (un cambio de sueldo a mitad de mes no debe recalcular retroactivamente lo ya trabajado).
 
@@ -64,8 +65,9 @@ Capa aparte, pensada para quien mantiene la aplicación, no para el personal de 
 - **Usuarios de una empresa**: alta de jefes o empleados de cualquier empresa, edición, activar/desactivar, resetear PIN, borrado.
 - **Desarrolladores**: alta de otras cuentas de desarrollador, resetear su contraseña, borrado (un desarrollador no puede borrar su propia cuenta).
 - **Pausar/reanudar una empresa** (p. ej. por impago): mientras está pausada, ni su jefe ni sus empleados pueden crear ni modificar nada (puestos, tarifas, turnos, incidencias, cambio de PIN) — solo consultar lo que ya existe. El jefe y los empleados ven un aviso explicándolo, y en la vista de jefe se ocultan los botones de crear/editar en vez de dejar que fallen al pulsarlos. Se aplica con políticas RLS (bloquean insert/update/delete, nunca el select) más una comprobación en la Edge Function que da de alta usuarios nuevos. Las empresas que se registran ellas mismas desde `/registro` empiezan pausadas por defecto — el desarrollador las activa manualmente desde el panel.
+- **Ingresos**: cada empresa tiene un precio mensual (60€ IVA incluido por defecto, editable por empresa). La pestaña "Ingresos" resume empresas activas/pausadas, el ingreso mensual proyectado (precio de las activas) y los ingresos reales del mes en curso, con gráficas (activas vs. pausadas, precio por empresa, ingresos reales por mes — hechas con CSS puro, sin ninguna librería de gráficas) y una tabla de pagos que el desarrollador introduce a mano (fecha, empresa, importe, notas), sin pasarela de pago automática.
 
-Todas estas operaciones se hacen con `service_role` desde Edge Functions dedicadas (`admin-empresas`, `admin-usuarios`, `admin-desarrolladores`), no ampliando las políticas RLS de `jefe`/`empleado` — un desarrollador nunca consulta las tablas de negocio directamente con su propia sesión.
+Todas estas operaciones se hacen con `service_role` desde Edge Functions dedicadas (`admin-empresas`, `admin-usuarios`, `admin-desarrolladores`, `admin-pagos`), no ampliando las políticas RLS de `jefe`/`empleado` — un desarrollador nunca consulta las tablas de negocio directamente con su propia sesión.
 
 ## Estructura del proyecto
 

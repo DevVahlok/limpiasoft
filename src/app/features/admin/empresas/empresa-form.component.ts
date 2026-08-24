@@ -40,6 +40,7 @@ export class EmpresaFormComponent {
   readonly form = this.fb.nonNullable.group({
     nombre: [this.data.empresa?.nombre ?? '', Validators.required],
     nif: [this.data.empresa?.nif ?? ''],
+    precioMensual: [this.data.empresa?.precio_mensual ?? 60, [Validators.required, Validators.min(0)]],
   });
 
   guardando = false;
@@ -51,8 +52,8 @@ export class EmpresaFormComponent {
     }
     this.guardando = true;
     this.errorMessage = null;
-    const { nombre, nif } = this.form.getRawValue();
-    const input = { nombre, nif: nif || undefined };
+    const { nombre, nif, precioMensual } = this.form.getRawValue();
+    const input = { nombre, nif: nif || undefined, precio_mensual: precioMensual };
     try {
       if (this.data.empresa) {
         await this.empresasService.actualizar(this.data.empresa.id, input);

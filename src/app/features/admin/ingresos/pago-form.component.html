@@ -1,20 +1,27 @@
-<h2 mat-dialog-title>{{ esEdicion ? 'Editar empresa' : 'Nueva empresa' }}</h2>
+<h2 mat-dialog-title>{{ esEdicion ? 'Editar pago' : 'Registrar pago' }}</h2>
 
 <form [formGroup]="form" (ngSubmit)="guardar()">
   <div mat-dialog-content class="fields">
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Nombre</mat-label>
-      <input matInput formControlName="nombre" />
+      <mat-label>Empresa</mat-label>
+      <mat-select formControlName="empresaId" (selectionChange)="onEmpresaSeleccionada($event.value)">
+        <mat-option *ngFor="let e of data.empresas" [value]="e.id">{{ e.nombre }}</mat-option>
+      </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label>NIF (opcional)</mat-label>
-      <input matInput formControlName="nif" />
+      <mat-label>Importe (€)</mat-label>
+      <input matInput type="number" step="0.01" min="0" formControlName="importe" />
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Precio mensual (€)</mat-label>
-      <input matInput type="number" step="0.01" min="0" formControlName="precioMensual" />
+      <mat-label>Fecha</mat-label>
+      <input matInput type="date" formControlName="fecha" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Notas (opcional)</mat-label>
+      <textarea matInput formControlName="notas" rows="2"></textarea>
     </mat-form-field>
 
     <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>

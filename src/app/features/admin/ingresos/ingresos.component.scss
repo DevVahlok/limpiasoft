@@ -1,0 +1,194 @@
+h1 {
+  margin-bottom: 16px;
+}
+
+h2 {
+  font-size: 16px;
+  margin: 0 0 16px;
+}
+
+.tarjetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.tarjeta {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 160px;
+}
+
+.tarjeta .valor {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.tarjeta .etiqueta {
+  font-size: 13px;
+  color: #757575;
+}
+
+.tarjeta-pausadas .valor {
+  color: #b26a00;
+}
+
+.tarjeta-proyeccion .valor {
+  color: var(--limpiasoft-primary);
+}
+
+.tarjeta-real .valor {
+  color: var(--limpiasoft-accent-dark);
+}
+
+.graficas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.grafica-caja {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 20px;
+}
+
+.grafica-ancha {
+  grid-column: 1 / -1;
+}
+
+.donut-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.donut {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.donut-hueco {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.donut-numero {
+  font-size: 22px;
+  font-weight: 600;
+  color: #1e7e34;
+}
+
+.donut-texto {
+  font-size: 12px;
+  color: #757575;
+}
+
+.donut-leyenda {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.leyenda-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.punto {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.punto-activa {
+  background: #1e7e34;
+}
+
+.punto-pausada {
+  background: #e0e0e0;
+}
+
+.barras {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fila-barra {
+  display: grid;
+  grid-template-columns: 140px 1fr 80px;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.nombre-barra {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pista-barra {
+  background: #f1f1f1;
+  border-radius: 4px;
+  height: 14px;
+  overflow: hidden;
+}
+
+.relleno-barra {
+  background: var(--limpiasoft-primary);
+  height: 100%;
+  border-radius: 4px;
+}
+
+.relleno-mes {
+  background: var(--limpiasoft-accent-dark);
+}
+
+.valor-barra {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.header-pagos {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+table {
+  width: 100%;
+}
+
+.acciones {
+  text-align: right;
+}
+
+.empty {
+  color: #757575;
+  margin-top: 8px;
+}

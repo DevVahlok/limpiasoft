@@ -1,0 +1,116 @@
+<h1>Ingresos</h1>
+
+<mat-spinner *ngIf="loading()" diameter="32"></mat-spinner>
+
+<ng-container *ngIf="!loading()">
+  <div class="tarjetas">
+    <div class="tarjeta">
+      <span class="valor">{{ activas().length }}</span>
+      <span class="etiqueta">Empresas activas</span>
+    </div>
+    <div class="tarjeta tarjeta-pausadas">
+      <span class="valor">{{ pausadas().length }}</span>
+      <span class="etiqueta">Empresas pausadas</span>
+    </div>
+    <div class="tarjeta tarjeta-proyeccion">
+      <span class="valor">{{ ingresoProyectado() | number: '1.2-2' }} €</span>
+      <span class="etiqueta">Ingreso mensual proyectado</span>
+    </div>
+    <div class="tarjeta tarjeta-real">
+      <span class="valor">{{ ingresosEsteMes() | number: '1.2-2' }} €</span>
+      <span class="etiqueta">Ingresos reales este mes</span>
+    </div>
+  </div>
+
+  <div class="graficas">
+    <div class="grafica-caja">
+      <h2>Empresas activas vs. pausadas</h2>
+      <div class="donut-wrapper">
+        <div class="donut" [style.background]="donutGradient()">
+          <div class="donut-hueco">
+            <span class="donut-numero">{{ activas().length }}</span>
+            <span class="donut-texto">activas</span>
+          </div>
+        </div>
+        <div class="donut-leyenda">
+          <span class="leyenda-item"><i class="punto punto-activa"></i>Activas ({{ activas().length }})</span>
+          <span class="leyenda-item"><i class="punto punto-pausada"></i>Pausadas ({{ pausadas().length }})</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grafica-caja">
+      <h2>Precio mensual por empresa activa</h2>
+      <div class="barras" *ngIf="barrasProyeccion().length > 0; else sinActivas">
+        <div class="fila-barra" *ngFor="let b of barrasProyeccion()">
+          <span class="nombre-barra">{{ b.nombre }}</span>
+          <div class="pista-barra">
+            <div class="relleno-barra" [style.width.%]="b.porcentaje"></div>
+          </div>
+          <span class="valor-barra">{{ b.importe | number: '1.2-2' }} €</span>
+        </div>
+      </div>
+      <ng-template #sinActivas><p class="empty">No hay empresas activas.</p></ng-template>
+    </div>
+
+    <div class="grafica-caja grafica-ancha">
+      <h2>Ingresos reales por mes</h2>
+      <div class="barras">
+        <div class="fila-barra" *ngFor="let m of barrasMensuales()">
+          <span class="nombre-barra">{{ m.etiqueta }}</span>
+          <div class="pista-barra">
+            <div class="relleno-barra relleno-mes" [style.width.%]="m.porcentaje"></div>
+          </div>
+          <span class="valor-barra">{{ m.total | number: '1.2-2' }} €</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="header-pagos">
+    <h2>Pagos registrados</h2>
+    <button mat-flat-button color="primary" (click)="abrirFormulario(null)">
+      <mat-icon>add</mat-icon>
+      Registrar pago
+    </button>
+  </div>
+
+  <table mat-table [dataSource]="pagos()" class="mat-elevation-z1">
+    <ng-container matColumnDef="fecha">
+      <th mat-header-cell *matHeaderCellDef>Fecha</th>
+      <td mat-cell *matCellDef="let p">{{ p.fecha | fechaEs }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="empresa">
+      <th mat-header-cell *matHeaderCellDef>Empresa</th>
+      <td mat-cell *matCellDef="let p">{{ p.empresa?.nombre || '—' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="importe">
+      <th mat-header-cell *matHeaderCellDef>Importe</th>
+      <td mat-cell *matCellDef="let p">{{ p.importe | number: '1.2-2' }} €</td>
+    </ng-container>
+
+    <ng-container matColumnDef="notas">
+      <th mat-header-cell *matHeaderCellDef>Notas</th>
+      <td mat-cell *matCellDef="let p">{{ p.notas || '—' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let p" class="acciones">
+        <button mat-icon-button (click)="abrirFormulario(p)" aria-label="Editar pago">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button (click)="eliminar(p)" aria-label="Eliminar pago">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnasPagos"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnasPagos"></tr>
+  </table>
+
+  <p *ngIf="pagos().length === 0" class="empty">Todavía no se ha registrado ningún pago.</p>
+</ng-container>
