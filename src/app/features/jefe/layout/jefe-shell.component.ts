@@ -41,7 +41,7 @@ export class JefeShellComponent implements OnInit {
   readonly profile = this.authService.profile;
 
   readonly links = [
-    { path: 'empleados', label: 'Empleados', icon: 'group' },
+    { path: 'empleados', label: 'Usuarios', icon: 'group' },
     { path: 'puestos', label: 'Puestos de trabajo', icon: 'location_on' },
     { path: 'calendario', label: 'Calendario', icon: 'calendar_month' },
     { path: 'incidencias', label: 'Incidencias', icon: 'report_problem' },

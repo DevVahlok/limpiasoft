@@ -1,7 +1,15 @@
-<h2 mat-dialog-title>Nuevo empleado</h2>
+<h2 mat-dialog-title>Nuevo usuario</h2>
 
 <form [formGroup]="form" (ngSubmit)="guardar()">
   <div mat-dialog-content class="fields">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Rol</mat-label>
+      <mat-select formControlName="rol">
+        <mat-option value="empleado">Empleado</mat-option>
+        <mat-option value="jefe">Jefe</mat-option>
+      </mat-select>
+    </mat-form-field>
+
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Nombre completo</mat-label>
       <input matInput formControlName="nombreCompleto" />
@@ -12,7 +20,7 @@
       <input matInput formControlName="telefono" />
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="full-width">
+    <mat-form-field appearance="outline" class="full-width" *ngIf="form.controls.rol.value === 'empleado'">
       <mat-label>Tarifa por hora (€)</mat-label>
       <input matInput type="number" step="0.5" formControlName="tarifaHora" />
     </mat-form-field>

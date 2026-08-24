@@ -33,7 +33,7 @@ export class EmpleadosListComponent implements OnInit {
 
   readonly empleados = signal<Profile[]>([]);
   readonly loading = signal(true);
-  readonly columnas = ['nombre_completo', 'username', 'telefono', 'activo'];
+  readonly columnas = ['nombre_completo', 'rol', 'username', 'telefono', 'activo'];
 
   ngOnInit(): void {
     void this.cargar();
@@ -42,7 +42,7 @@ export class EmpleadosListComponent implements OnInit {
   async cargar(): Promise<void> {
     this.loading.set(true);
     try {
-      this.empleados.set(await this.empleadosService.listar());
+      this.empleados.set(await this.empleadosService.listarUsuarios());
     } finally {
       this.loading.set(false);
     }
@@ -55,7 +55,7 @@ export class EmpleadosListComponent implements OnInit {
 
     ref.afterClosed().subscribe((resultado) => {
       if (resultado) {
-        this.snackBar.open(`Empleado creado. Usuario: ${resultado.username} (PIN inicial ya establecido)`, 'Cerrar', {
+        this.snackBar.open(`Usuario creado. Usuario: ${resultado.username} (PIN inicial ya establecido)`, 'Cerrar', {
           duration: 15000,
         });
         void this.cargar();

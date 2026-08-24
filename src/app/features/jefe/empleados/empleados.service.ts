@@ -8,6 +8,7 @@ export interface CrearEmpleadoParams {
   telefono?: string;
   tarifaHora?: number;
   pin?: string;
+  rol: 'empleado' | 'jefe';
 }
 
 export interface CrearEmpleadoResultado {
@@ -19,11 +20,25 @@ export interface CrearEmpleadoResultado {
 export class EmpleadosService {
   private readonly supabase = inject(SupabaseService).client;
 
+  /** Solo empleados (para asignar turnos, tarifas y el resumen mensual). */
   async listar(): Promise<Profile[]> {
     const { data, error } = await this.supabase
       .from('profiles')
       .select('*')
       .eq('rol', 'empleado')
+      .order('nombre_completo');
+    if (error) {
+      throw error;
+    }
+    return data as Profile[];
+  }
+
+  /** Empleados y jefes juntos, para la pantalla de gestión de usuarios. */
+  async listarUsuarios(): Promise<Profile[]> {
+    const { data, error } = await this.supabase
+      .from('profiles')
+      .select('*')
+      .order('rol', { ascending: false })
       .order('nombre_completo');
     if (error) {
       throw error;
@@ -38,6 +53,7 @@ export class EmpleadosService {
         telefono: params.telefono,
         tarifa_hora: params.tarifaHora,
         pin: params.pin,
+        rol: params.rol,
       },
     });
 

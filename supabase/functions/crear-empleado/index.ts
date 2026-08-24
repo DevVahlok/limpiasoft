@@ -83,7 +83,13 @@ Deno.serve(async (req: Request) => {
     return json({ error: "Solo un jefe puede dar de alta empleados" }, 403);
   }
 
-  let body: { nombre_completo?: string; telefono?: string; tarifa_hora?: number; pin?: string };
+  let body: {
+    nombre_completo?: string;
+    telefono?: string;
+    tarifa_hora?: number;
+    pin?: string;
+    rol?: string;
+  };
   try {
     body = await req.json();
   } catch {
@@ -92,6 +98,7 @@ Deno.serve(async (req: Request) => {
 
   const { nombre_completo, telefono, tarifa_hora } = body;
   const pin = body.pin?.trim() || "0000";
+  const rol = body.rol === "jefe" ? "jefe" : "empleado";
   if (!nombre_completo) {
     return json({ error: "nombre_completo es obligatorio" }, 400);
   }
@@ -110,7 +117,7 @@ Deno.serve(async (req: Request) => {
     email: `${username}@${DOMINIO}`,
     password: `lsft-${pin}`,
     email_confirm: true,
-    app_metadata: { empresa_id: empresaId, rol: "empleado" },
+    app_metadata: { empresa_id: empresaId, rol },
     user_metadata: { nombre_completo, username },
   });
 
@@ -122,7 +129,7 @@ Deno.serve(async (req: Request) => {
     await adminClient.from("profiles").update({ telefono }).eq("id", created.user.id);
   }
 
-  if (typeof tarifa_hora === "number") {
+  if (rol === "empleado" && typeof tarifa_hora === "number") {
     await adminClient.from("tarifas").insert({
       empresa_id: empresaId,
       empleado_id: created.user.id,

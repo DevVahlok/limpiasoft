@@ -1,8 +1,8 @@
 <div class="header">
-  <h1>Empleados</h1>
+  <h1>Usuarios</h1>
   <button mat-flat-button color="primary" (click)="abrirFormulario()">
     <mat-icon>person_add</mat-icon>
-    Nuevo empleado
+    Nuevo usuario
   </button>
 </div>
 
@@ -12,6 +12,11 @@
   <ng-container matColumnDef="nombre_completo">
     <th mat-header-cell *matHeaderCellDef>Nombre</th>
     <td mat-cell *matCellDef="let e">{{ e.nombre_completo }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="rol">
+    <th mat-header-cell *matHeaderCellDef>Rol</th>
+    <td mat-cell *matCellDef="let e">{{ e.rol === 'jefe' ? 'Jefe' : 'Empleado' }}</td>
   </ng-container>
 
   <ng-container matColumnDef="username">
@@ -33,4 +38,4 @@
   <tr mat-row *matRowDef="let row; columns: columnas"></tr>
 </table>
 
-<p *ngIf="!loading() && empleados().length === 0" class="empty">Todavía no has dado de alta a ningún empleado.</p>
+<p *ngIf="!loading() && empleados().length === 0" class="empty">Todavía no hay usuarios dados de alta.</p>
