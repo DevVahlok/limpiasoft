@@ -1,10 +1,19 @@
 <div class="header">
   <h1>Calendario</h1>
-  <button mat-flat-button color="primary" (click)="abrirNuevoTurno()">
-    <mat-icon>event_available</mat-icon>
-    Nuevo turno
-  </button>
+  <div class="acciones-header">
+    <mat-form-field appearance="outline" class="filtro-empleado" subscriptSizing="dynamic">
+      <mat-label>Filtrar por empleado</mat-label>
+      <mat-select [value]="empleadoSeleccionado()" (selectionChange)="empleadoSeleccionado.set($event.value)">
+        <mat-option value="">Todos</mat-option>
+        <mat-option *ngFor="let e of empleados()" [value]="e.id">{{ e.nombre_completo }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-flat-button color="primary" (click)="abrirNuevoTurno()">
+      <mat-icon>event_available</mat-icon>
+      Nuevo turno
+    </button>
+  </div>
 </div>
 
-<app-calendario-mes [turnos]="turnos()" (mesCambiado)="onMesCambiado($event)" (diaClick)="onDiaClick($event)">
+<app-calendario-mes [turnos]="turnosFiltrados()" (mesCambiado)="onMesCambiado($event)" (diaClick)="onDiaClick($event)">
 </app-calendario-mes>
