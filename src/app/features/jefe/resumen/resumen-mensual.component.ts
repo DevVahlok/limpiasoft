@@ -7,6 +7,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 
 import { Profile } from '../../../core/auth/auth.models';
+import { ResponsiveService } from '../../../core/layout/responsive.service';
 import { Tarifa } from '../../../core/tarifas/tarifa.models';
 import { TarifasService } from '../../../core/tarifas/tarifas.service';
 import { horasEntre, mesActualIso, rangoDelMes } from '../../../core/turnos/fecha.util';
@@ -56,6 +57,7 @@ export class ResumenMensualComponent implements OnInit {
   private readonly turnosService = inject(TurnosService);
   private readonly tarifasService = inject(TarifasService);
   private readonly dialog = inject(MatDialog);
+  readonly responsive = inject(ResponsiveService);
 
   mes = mesActualIso();
   readonly filas = signal<FilaResumen[]>([]);

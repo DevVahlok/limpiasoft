@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 
+import { ResponsiveService } from '../../../core/layout/responsive.service';
 import { FechaEsPipe } from '../../../shared/pipes/fecha-es.pipe';
 import { DetalleTurno } from './resumen-mensual.component';
 
@@ -21,5 +22,6 @@ export interface DetalleResumenData {
 })
 export class DetalleResumenComponent {
   readonly data = inject<DetalleResumenData>(MAT_DIALOG_DATA);
+  readonly responsive = inject(ResponsiveService);
   readonly columnas = ['fecha', 'puesto', 'horario', 'horas', 'tarifa', 'importe'];
 }

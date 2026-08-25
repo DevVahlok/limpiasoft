@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 
 import { AdminEmpresasService } from '../../../core/admin/admin-empresas.service';
 import { Empresa } from '../../../core/admin/admin.models';
+import { ResponsiveService } from '../../../core/layout/responsive.service';
 import { ConfirmDialogComponent, ConfirmDialogData } from '../../../shared/confirm-dialog/confirm-dialog.component';
 import { EmpresaFormComponent, EmpresaFormData } from './empresa-form.component';
 
@@ -35,6 +36,7 @@ export class EmpresasListComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
   private readonly router = inject(Router);
+  readonly responsive = inject(ResponsiveService);
 
   readonly empresas = signal<Empresa[]>([]);
   readonly loading = signal(true);

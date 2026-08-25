@@ -25,7 +25,24 @@
   </div>
 </div>
 
-<div class="tabla-contenedor" *ngIf="!loading()">
+<div class="tarjetas-tabla" *ngIf="!loading() && responsive.isHandset()">
+  <div class="tarjeta-fila" *ngFor="let t of turnos()">
+    <div class="tarjeta-titulo">{{ t.fecha | fechaEs }} · {{ t.puesto?.nombre || '—' }}</div>
+    <div class="tarjeta-campo"><span class="tarjeta-etiqueta">Horario:</span>{{ t.hora_inicio.slice(0, 5) }}–{{ t.hora_fin.slice(0, 5) }}</div>
+    <div class="tarjeta-campo"><span class="tarjeta-etiqueta">Horas:</span>{{ horas(t).toFixed(2) }}</div>
+    <div class="tarjeta-campo">
+      <span class="tarjeta-etiqueta">Estado:</span>
+      <span class="estado" [ngClass]="'estado-' + t.estado">{{ t.estado }}</span>
+    </div>
+    <div class="tarjeta-campo">
+      <span class="tarjeta-etiqueta">Importe:</span>
+      <ng-container *ngIf="importe(t) as imp; else sinImporteTarjeta">{{ imp.toFixed(2) }} €</ng-container>
+      <ng-template #sinImporteTarjeta>—</ng-template>
+    </div>
+  </div>
+</div>
+
+<div class="tabla-contenedor" *ngIf="!loading() && !responsive.isHandset()">
 <table mat-table [dataSource]="turnos()" class="mat-elevation-z1">
   <ng-container matColumnDef="fecha">
     <th mat-header-cell *matHeaderCellDef>Fecha</th>

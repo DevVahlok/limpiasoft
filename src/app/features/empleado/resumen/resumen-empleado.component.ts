@@ -3,6 +3,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 
+import { ResponsiveService } from '../../../core/layout/responsive.service';
 import { Tarifa } from '../../../core/tarifas/tarifa.models';
 import { TarifasService } from '../../../core/tarifas/tarifas.service';
 import { horasEntre, mesActualIso, rangoDelMes } from '../../../core/turnos/fecha.util';
@@ -21,6 +22,7 @@ import { SelectorMesComponent } from '../../../shared/selector-mes/selector-mes.
 export class ResumenEmpleadoComponent implements OnInit {
   private readonly turnosService = inject(TurnosService);
   private readonly tarifasService = inject(TarifasService);
+  readonly responsive = inject(ResponsiveService);
 
   mes = mesActualIso();
   readonly loading = signal(true);

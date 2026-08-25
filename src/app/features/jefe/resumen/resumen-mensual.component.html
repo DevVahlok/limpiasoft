@@ -5,7 +5,19 @@
 
 <mat-spinner *ngIf="loading()" diameter="32"></mat-spinner>
 
-<div class="tabla-contenedor" *ngIf="!loading()">
+<div class="tarjetas-tabla" *ngIf="!loading() && responsive.isHandset()">
+  <div class="tarjeta-fila" *ngFor="let f of filas()">
+    <div class="tarjeta-titulo">{{ f.empleado.nombre_completo }}</div>
+    <div class="tarjeta-campo"><span class="tarjeta-etiqueta">Horas trabajadas:</span>{{ f.horas.toFixed(2) }} h</div>
+    <div class="tarjeta-campo"><span class="tarjeta-etiqueta">Total a pagar:</span>{{ f.importe.toFixed(2) }} €</div>
+    <div class="tarjeta-campo"><span class="tarjeta-etiqueta">Previsión del mes:</span>{{ f.previsionImporte.toFixed(2) }} €</div>
+    <div class="tarjeta-acciones">
+      <button mat-button (click)="verDetalle(f)" [disabled]="f.detalle.length === 0">Ver detalle</button>
+    </div>
+  </div>
+</div>
+
+<div class="tabla-contenedor" *ngIf="!loading() && !responsive.isHandset()">
 <table mat-table [dataSource]="filas()" class="mat-elevation-z1">
   <ng-container matColumnDef="nombre">
     <th mat-header-cell *matHeaderCellDef>Empleado</th>

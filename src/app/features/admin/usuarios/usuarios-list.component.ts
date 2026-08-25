@@ -12,6 +12,7 @@ import { RouterLink } from '@angular/router';
 import { AdminEmpresasService } from '../../../core/admin/admin-empresas.service';
 import { AdminUsuariosService } from '../../../core/admin/admin-usuarios.service';
 import { Profile } from '../../../core/auth/auth.models';
+import { ResponsiveService } from '../../../core/layout/responsive.service';
 import { ConfirmDialogComponent, ConfirmDialogData } from '../../../shared/confirm-dialog/confirm-dialog.component';
 import { ResetPinDialogComponent, ResetPinDialogData } from './reset-pin-dialog.component';
 import { UsuarioFormComponent, UsuarioFormData } from './usuario-form.component';
@@ -40,6 +41,7 @@ export class UsuariosListComponent implements OnInit {
   private readonly empresasService = inject(AdminEmpresasService);
   private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
+  readonly responsive = inject(ResponsiveService);
 
   readonly usuarios = signal<Profile[]>([]);
   readonly nombreEmpresa = signal('');

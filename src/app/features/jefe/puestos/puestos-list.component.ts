@@ -9,6 +9,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 
 import { AuthService } from '../../../core/auth/auth.service';
+import { ResponsiveService } from '../../../core/layout/responsive.service';
 import { PuestoFormComponent } from './puesto-form.component';
 import { Puesto, PuestosService } from './puestos.service';
 
@@ -33,6 +34,7 @@ export class PuestosListComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
   readonly authService = inject(AuthService);
+  readonly responsive = inject(ResponsiveService);
 
   readonly puestos = signal<Puesto[]>([]);
   readonly loading = signal(true);

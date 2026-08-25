@@ -9,6 +9,7 @@ import { MatTableModule } from '@angular/material/table';
 
 import { Profile } from '../../../core/auth/auth.models';
 import { AuthService } from '../../../core/auth/auth.service';
+import { ResponsiveService } from '../../../core/layout/responsive.service';
 import { EmpleadoFormComponent, EmpleadoFormResultado } from './empleado-form.component';
 import { EmpleadosService } from './empleados.service';
 
@@ -32,6 +33,7 @@ export class EmpleadosListComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
   readonly authService = inject(AuthService);
+  readonly responsive = inject(ResponsiveService);
 
   readonly empleados = signal<Profile[]>([]);
   readonly loading = signal(true);

@@ -5,7 +5,33 @@
 
 <mat-spinner *ngIf="loading()" diameter="32"></mat-spinner>
 
-<div class="tabla-contenedor" *ngIf="!loading()">
+<div class="tarjetas-tabla" *ngIf="!loading() && responsive.isHandset()">
+  <div class="tarjeta-fila" *ngFor="let i of incidencias()">
+    <div class="tarjeta-titulo">{{ i.empleado?.nombre_completo || '—' }}</div>
+    <div class="tarjeta-campo"><span class="tarjeta-etiqueta">Fecha:</span>{{ (i.turno?.fecha || i.created_at) | fechaEs }}</div>
+    <div class="tarjeta-campo"><span class="tarjeta-etiqueta">Puesto:</span>{{ i.turno?.puesto?.nombre || '—' }}</div>
+    <div class="tarjeta-campo"><span class="tarjeta-etiqueta">Tipo:</span>{{ etiquetasTipo[i.tipo] }}</div>
+    <div class="tarjeta-campo"><span class="tarjeta-etiqueta">Descripción:</span>{{ i.descripcion }}</div>
+    <div class="tarjeta-campo">
+      <span class="tarjeta-etiqueta">Estado:</span>
+      <mat-form-field
+        *ngIf="!authService.empresaPausada(); else soloEstadoTarjeta"
+        appearance="outline"
+        class="select-estado"
+        subscriptSizing="dynamic"
+      >
+        <mat-select [value]="i.estado" (selectionChange)="cambiarEstado(i, $event.value)">
+          <mat-option value="pendiente">Pendiente</mat-option>
+          <mat-option value="revisada">Revisada</mat-option>
+          <mat-option value="resuelta">Resuelta</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <ng-template #soloEstadoTarjeta>{{ etiquetasEstado[i.estado] }}</ng-template>
+    </div>
+  </div>
+</div>
+
+<div class="tabla-contenedor" *ngIf="!loading() && !responsive.isHandset()">
 <table mat-table [dataSource]="incidencias()" class="mat-elevation-z1">
   <ng-container matColumnDef="empleado">
     <th mat-header-cell *matHeaderCellDef>Empleado</th>

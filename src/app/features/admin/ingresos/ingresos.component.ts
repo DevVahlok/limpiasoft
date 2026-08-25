@@ -10,6 +10,7 @@ import { MatTableModule } from '@angular/material/table';
 import { AdminEmpresasService } from '../../../core/admin/admin-empresas.service';
 import { AdminPagosService } from '../../../core/admin/admin-pagos.service';
 import { Empresa, Pago } from '../../../core/admin/admin.models';
+import { ResponsiveService } from '../../../core/layout/responsive.service';
 import { ConfirmDialogComponent, ConfirmDialogData } from '../../../shared/confirm-dialog/confirm-dialog.component';
 import { FechaEsPipe } from '../../../shared/pipes/fecha-es.pipe';
 import { PagoFormComponent, PagoFormData } from './pago-form.component';
@@ -35,6 +36,7 @@ export class IngresosComponent implements OnInit {
   private readonly pagosService = inject(AdminPagosService);
   private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
+  readonly responsive = inject(ResponsiveService);
 
   readonly empresas = signal<Empresa[]>([]);
   readonly pagos = signal<Pago[]>([]);

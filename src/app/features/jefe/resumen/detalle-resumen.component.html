@@ -1,7 +1,21 @@
 <h2 mat-dialog-title>Detalle · {{ data.empleadoNombre }}</h2>
 
 <div mat-dialog-content>
-  <div class="tabla-contenedor">
+  <div class="tarjetas-tabla" *ngIf="responsive.isHandset()">
+    <div class="tarjeta-fila" *ngFor="let d of data.detalle">
+      <div class="tarjeta-titulo">{{ d.turno.fecha | fechaEs }} · {{ d.turno.puesto?.nombre || '—' }}</div>
+      <div class="tarjeta-campo">
+        <span class="tarjeta-etiqueta">Horario:</span>{{ d.turno.hora_inicio.slice(0, 5) }}–{{ d.turno.hora_fin.slice(0, 5) }}
+      </div>
+      <div class="tarjeta-campo"><span class="tarjeta-etiqueta">Horas:</span>{{ d.horas.toFixed(2) }}</div>
+      <div class="tarjeta-campo">
+        <span class="tarjeta-etiqueta">Tarifa:</span>{{ d.tarifaHora !== null ? (d.tarifaHora + ' €/h') : 'sin tarifa' }}
+      </div>
+      <div class="tarjeta-campo"><span class="tarjeta-etiqueta">Importe:</span>{{ d.importe.toFixed(2) }} €</div>
+    </div>
+  </div>
+
+  <div class="tabla-contenedor" *ngIf="!responsive.isHandset()">
   <table mat-table [dataSource]="data.detalle">
     <ng-container matColumnDef="fecha">
       <th mat-header-cell *matHeaderCellDef>Fecha</th>

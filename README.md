@@ -75,7 +75,7 @@ Toda la app (jefe, empleado y desarrolladores) se adapta a tablet y móvil, sin 
 
 - El menú lateral de cada vista pasa a un menú de hamburguesa superpuesto por debajo de 600px de ancho (`core/layout/responsive.service.ts`, que envuelve `BreakpointObserver` de Angular CDK), y se cierra solo al navegar a otra sección.
 - Los diálogos tienen un ancho máximo global (`95vw`, en `app.config.ts`) para no desbordar en pantallas estrechas.
-- Las tablas se desplazan horizontalmente dentro de su propio contenedor en vez de romper el ancho de la página.
+- Las 11 tablas de la app se convierten en móvil en una lista de tarjetas (una fila = una tarjeta, con cada campo apilado y sus acciones abajo) en vez de un scroll horizontal — en tablet/escritorio se sigue viendo la tabla normal.
 - El calendario mensual muestra la rejilla habitual en tablet/escritorio, y en móvil pasa a una vista de lista/agenda (un día por fila) — mismo componente (`shared/calendario-mes/`), sin duplicar la lógica de turnos ni el diálogo de detalle del día.
 
 ## Estructura del proyecto

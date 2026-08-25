@@ -8,7 +8,37 @@
 
 <mat-spinner *ngIf="loading()" diameter="32"></mat-spinner>
 
-<div class="tabla-contenedor" *ngIf="!loading()">
+<div class="tarjetas-tabla" *ngIf="!loading() && responsive.isHandset()">
+  <div class="tarjeta-fila" *ngFor="let e of empresas()">
+    <div class="tarjeta-titulo">{{ e.nombre }}</div>
+    <div class="tarjeta-campo"><span class="tarjeta-etiqueta">NIF:</span>{{ e.nif || '—' }}</div>
+    <div class="tarjeta-campo"><span class="tarjeta-etiqueta">Precio/mes:</span>{{ e.precio_mensual | number: '1.2-2' }} €</div>
+    <div class="tarjeta-campo">
+      <span class="tarjeta-etiqueta">Estado:</span>
+      <mat-chip [ngClass]="e.pausada ? 'chip-pausada' : 'chip-activa'">{{ e.pausada ? 'Pausada' : 'Activa' }}</mat-chip>
+    </div>
+    <div class="tarjeta-acciones">
+      <button mat-icon-button (click)="verUsuarios(e)" aria-label="Ver usuarios">
+        <mat-icon>group</mat-icon>
+      </button>
+      <button mat-icon-button (click)="abrirFormulario(e)" aria-label="Editar empresa">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button
+        mat-icon-button
+        (click)="cambiarPausa(e)"
+        [attr.aria-label]="e.pausada ? 'Reanudar empresa' : 'Pausar empresa'"
+      >
+        <mat-icon>{{ e.pausada ? 'play_circle' : 'pause_circle' }}</mat-icon>
+      </button>
+      <button mat-icon-button (click)="eliminar(e)" aria-label="Eliminar empresa">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="tabla-contenedor" *ngIf="!loading() && !responsive.isHandset()">
 <table mat-table [dataSource]="empresas()" class="mat-elevation-z1">
   <ng-container matColumnDef="nombre">
     <th mat-header-cell *matHeaderCellDef>Nombre</th>

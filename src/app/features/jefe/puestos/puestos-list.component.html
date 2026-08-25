@@ -8,7 +8,26 @@
 
 <mat-spinner *ngIf="loading()" diameter="32"></mat-spinner>
 
-<div class="tabla-contenedor" *ngIf="!loading()">
+<div class="tarjetas-tabla" *ngIf="!loading() && responsive.isHandset()">
+  <div class="tarjeta-fila" *ngFor="let p of puestos()">
+    <div class="tarjeta-titulo">{{ p.nombre }}</div>
+    <div class="tarjeta-campo"><span class="tarjeta-etiqueta">Dirección:</span>{{ p.direccion || '—' }}</div>
+    <div class="tarjeta-campo">
+      <span class="tarjeta-etiqueta">Estado:</span>
+      <mat-chip [ngClass]="p.activo ? 'chip-activo' : 'chip-inactivo'">{{ p.activo ? 'Activo' : 'Inactivo' }}</mat-chip>
+    </div>
+    <div class="tarjeta-acciones" *ngIf="!authService.empresaPausada()">
+      <button mat-icon-button (click)="abrirFormulario(p)" aria-label="Editar puesto">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button (click)="cambiarActivo(p)" [attr.aria-label]="p.activo ? 'Desactivar puesto' : 'Activar puesto'">
+        <mat-icon>{{ p.activo ? 'toggle_on' : 'toggle_off' }}</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="tabla-contenedor" *ngIf="!loading() && !responsive.isHandset()">
 <table mat-table [dataSource]="puestos()" class="mat-elevation-z1">
   <ng-container matColumnDef="nombre">
     <th mat-header-cell *matHeaderCellDef>Nombre</th>

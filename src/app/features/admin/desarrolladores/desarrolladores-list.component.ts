@@ -10,6 +10,7 @@ import { MatTableModule } from '@angular/material/table';
 import { AdminAuthService } from '../../../core/admin/admin-auth.service';
 import { AdminDesarrolladoresService } from '../../../core/admin/admin-desarrolladores.service';
 import { AppAdmin } from '../../../core/admin/admin.models';
+import { ResponsiveService } from '../../../core/layout/responsive.service';
 import { ConfirmDialogComponent, ConfirmDialogData } from '../../../shared/confirm-dialog/confirm-dialog.component';
 import { DesarrolladorFormComponent, DesarrolladorFormData } from './desarrollador-form.component';
 import { ResetPasswordDialogComponent, ResetPasswordDialogData } from './reset-password-dialog.component';
@@ -34,6 +35,7 @@ export class DesarrolladoresListComponent implements OnInit {
   private readonly adminAuthService = inject(AdminAuthService);
   private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
+  readonly responsive = inject(ResponsiveService);
 
   readonly desarrolladores = signal<AppAdmin[]>([]);
   readonly loading = signal(true);

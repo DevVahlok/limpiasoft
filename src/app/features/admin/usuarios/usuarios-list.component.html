@@ -11,7 +11,34 @@
 
 <mat-spinner *ngIf="loading()" diameter="32"></mat-spinner>
 
-<div class="tabla-contenedor" *ngIf="!loading()">
+<div class="tarjetas-tabla" *ngIf="!loading() && responsive.isHandset()">
+  <div class="tarjeta-fila" *ngFor="let u of usuarios()">
+    <div class="tarjeta-titulo">{{ u.nombre_completo }}</div>
+    <div class="tarjeta-campo"><span class="tarjeta-etiqueta">Rol:</span>{{ u.rol === 'jefe' ? 'Jefe' : 'Empleado' }}</div>
+    <div class="tarjeta-campo"><span class="tarjeta-etiqueta">Usuario:</span>{{ u.username }}</div>
+    <div class="tarjeta-campo"><span class="tarjeta-etiqueta">Teléfono:</span>{{ u.telefono || '—' }}</div>
+    <div class="tarjeta-campo">
+      <span class="tarjeta-etiqueta">Estado:</span>
+      <mat-chip [ngClass]="u.activo ? 'chip-activo' : 'chip-inactivo'">{{ u.activo ? 'Activo' : 'Inactivo' }}</mat-chip>
+    </div>
+    <div class="tarjeta-acciones">
+      <button mat-icon-button (click)="abrirFormulario(u)" aria-label="Editar usuario">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button (click)="resetearPin(u)" aria-label="Resetear PIN">
+        <mat-icon>lock_reset</mat-icon>
+      </button>
+      <button mat-icon-button (click)="cambiarActivo(u)" [attr.aria-label]="u.activo ? 'Desactivar usuario' : 'Activar usuario'">
+        <mat-icon>{{ u.activo ? 'toggle_on' : 'toggle_off' }}</mat-icon>
+      </button>
+      <button mat-icon-button (click)="eliminar(u)" aria-label="Eliminar usuario">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="tabla-contenedor" *ngIf="!loading() && !responsive.isHandset()">
 <table mat-table [dataSource]="usuarios()" class="mat-elevation-z1">
   <ng-container matColumnDef="nombre_completo">
     <th mat-header-cell *matHeaderCellDef>Nombre</th>

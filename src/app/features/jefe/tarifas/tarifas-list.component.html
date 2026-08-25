@@ -2,7 +2,30 @@
 
 <mat-spinner *ngIf="loading()" diameter="32"></mat-spinner>
 
-<div class="tabla-contenedor" *ngIf="!loading()">
+<div class="tarjetas-tabla" *ngIf="!loading() && responsive.isHandset()">
+  <div class="tarjeta-fila" *ngFor="let f of filas()">
+    <div class="tarjeta-titulo">{{ f.empleado.nombre_completo }}</div>
+    <div class="tarjeta-campo">
+      <span class="tarjeta-etiqueta">Tarifa actual:</span>{{ f.actual ? (f.actual.tarifa_hora + ' €/h') : '—' }}
+    </div>
+    <div class="tarjeta-campo"><span class="tarjeta-etiqueta">Vigente desde:</span>{{ f.actual?.vigente_desde | fechaEs }}</div>
+    <div class="tarjeta-acciones">
+      <button mat-icon-button (click)="abrirHistorial(f)" aria-label="Ver historial" [disabled]="f.historial.length === 0">
+        <mat-icon>history</mat-icon>
+      </button>
+      <button
+        mat-icon-button
+        *ngIf="!authService.empresaPausada()"
+        (click)="abrirNuevaTarifa(f)"
+        aria-label="Cambiar tarifa"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="tabla-contenedor" *ngIf="!loading() && !responsive.isHandset()">
 <table mat-table [dataSource]="filas()" class="mat-elevation-z1">
   <ng-container matColumnDef="nombre">
     <th mat-header-cell *matHeaderCellDef>Empleado</th>

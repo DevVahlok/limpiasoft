@@ -28,3 +28,45 @@ $limpiasoft-theme: mat.define-light-theme((
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+// Alternativa a las tablas en móvil: una fila = una tarjeta con los campos
+// apilados, en vez de una tabla con scroll horizontal. Reutilizada por todos
+// los listados de la app (puestos, usuarios, tarifas, incidencias...).
+.tarjetas-tabla {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tarjeta-fila {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 12px 16px;
+}
+
+.tarjeta-titulo {
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+.tarjeta-campo {
+  font-size: 13px;
+  color: #424242;
+  padding: 2px 0;
+}
+
+.tarjeta-etiqueta {
+  color: #757575;
+  margin-right: 4px;
+}
+
+.tarjeta-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+  margin-top: 6px;
+  border-top: 1px solid #f1f1f1;
+  padding-top: 6px;
+}

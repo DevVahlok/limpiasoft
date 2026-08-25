@@ -8,6 +8,7 @@ import { MatTableModule } from '@angular/material/table';
 
 import { Profile } from '../../../core/auth/auth.models';
 import { AuthService } from '../../../core/auth/auth.service';
+import { ResponsiveService } from '../../../core/layout/responsive.service';
 import { FechaEsPipe } from '../../../shared/pipes/fecha-es.pipe';
 import { EmpleadosService } from '../empleados/empleados.service';
 import { HistorialTarifasComponent, HistorialTarifasData } from './historial-tarifas.component';
@@ -41,6 +42,7 @@ export class TarifasListComponent implements OnInit {
   private readonly tarifasService = inject(TarifasService);
   private readonly dialog = inject(MatDialog);
   readonly authService = inject(AuthService);
+  readonly responsive = inject(ResponsiveService);
 
   readonly filas = signal<FilaTarifa[]>([]);
   readonly loading = signal(true);

@@ -75,7 +75,23 @@
     </button>
   </div>
 
-  <div class="tabla-contenedor">
+  <div class="tarjetas-tabla" *ngIf="responsive.isHandset()">
+    <div class="tarjeta-fila" *ngFor="let p of pagos()">
+      <div class="tarjeta-titulo">{{ p.empresa?.nombre || '—' }} · {{ p.importe | number: '1.2-2' }} €</div>
+      <div class="tarjeta-campo"><span class="tarjeta-etiqueta">Fecha:</span>{{ p.fecha | fechaEs }}</div>
+      <div class="tarjeta-campo"><span class="tarjeta-etiqueta">Notas:</span>{{ p.notas || '—' }}</div>
+      <div class="tarjeta-acciones">
+        <button mat-icon-button (click)="abrirFormulario(p)" aria-label="Editar pago">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button (click)="eliminar(p)" aria-label="Eliminar pago">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabla-contenedor" *ngIf="!responsive.isHandset()">
   <table mat-table [dataSource]="pagos()" class="mat-elevation-z1">
     <ng-container matColumnDef="fecha">
       <th mat-header-cell *matHeaderCellDef>Fecha</th>

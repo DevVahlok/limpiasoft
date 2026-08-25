@@ -7,6 +7,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 
 import { AuthService } from '../../../core/auth/auth.service';
+import { ResponsiveService } from '../../../core/layout/responsive.service';
 import { EstadoIncidencia, Incidencia } from '../../../core/incidencias/incidencia.models';
 import { IncidenciasService } from '../../../core/incidencias/incidencias.service';
 import { mesActualIso, rangoDelMes } from '../../../core/turnos/fecha.util';
@@ -50,6 +51,7 @@ export class IncidenciasJefeComponent implements OnInit {
   private readonly incidenciasService = inject(IncidenciasService);
   private readonly snackBar = inject(MatSnackBar);
   readonly authService = inject(AuthService);
+  readonly responsive = inject(ResponsiveService);
 
   mes = mesActualIso();
   readonly incidencias = signal<Incidencia[]>([]);
