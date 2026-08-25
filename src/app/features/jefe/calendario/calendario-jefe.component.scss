@@ -2,15 +2,28 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px 16px;
   margin-bottom: 16px;
 }
 
 .acciones-header {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 12px;
 }
 
 .filtro-empleado {
   width: 220px;
+}
+
+@media (max-width: 599.98px) {
+  .acciones-header {
+    width: 100%;
+  }
+
+  .filtro-empleado {
+    width: 100%;
+  }
 }

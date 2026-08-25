@@ -1,4 +1,5 @@
 import { APP_INITIALIZER, ApplicationConfig } from '@angular/core';
+import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
@@ -29,6 +30,10 @@ export const appConfig: ApplicationConfig = {
       useFactory: initAdminAuth,
       deps: [AdminAuthService],
       multi: true,
+    },
+    {
+      provide: MAT_DIALOG_DEFAULT_OPTIONS,
+      useValue: { maxWidth: '95vw', maxHeight: '90vh' },
     },
   ],
 };

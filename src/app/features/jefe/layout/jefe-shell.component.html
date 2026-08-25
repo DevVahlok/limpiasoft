@@ -1,9 +1,12 @@
 <mat-toolbar color="primary">
+  <button mat-icon-button *ngIf="responsive.isHandset()" (click)="sidenav.toggle()" aria-label="Abrir menú">
+    <mat-icon>menu</mat-icon>
+  </button>
   <img src="assets/img/logo-icon.png" alt="" class="logo-icon" />
   <span>Limpiasoft</span>
   <span class="empresa-label" *ngIf="profile()?.empresa?.nombre">· {{ profile()?.empresa?.nombre }}</span>
   <span class="spacer"></span>
-  <span class="user-label">{{ profile()?.nombre_completo }}</span>
+  <span class="user-label" *ngIf="!responsive.isHandset()">{{ profile()?.nombre_completo }}</span>
   <button mat-icon-button (click)="cambiarPin()" aria-label="Cambiar PIN">
     <mat-icon>lock_reset</mat-icon>
   </button>
@@ -18,9 +21,19 @@
 </div>
 
 <mat-sidenav-container class="shell-container">
-  <mat-sidenav mode="side" opened class="sidenav">
+  <mat-sidenav
+    [mode]="responsive.isHandset() ? 'over' : 'side'"
+    [opened]="!responsive.isHandset()"
+    class="sidenav"
+  >
     <mat-nav-list>
-      <a mat-list-item *ngFor="let link of links" [routerLink]="link.path" routerLinkActive="active-link">
+      <a
+        mat-list-item
+        *ngFor="let link of links"
+        [routerLink]="link.path"
+        routerLinkActive="active-link"
+        (click)="cerrarSiEsMovil()"
+      >
         <mat-icon
           matListItemIcon
           [matBadge]="incidenciasService.pendientesCount()"

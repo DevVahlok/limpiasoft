@@ -101,3 +101,81 @@
   font-size: 10px;
   color: #757575;
 }
+
+.agenda-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.agenda-dia {
+  all: unset;
+  cursor: pointer;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 10px 12px;
+  background: #fff;
+}
+
+.agenda-dia:hover {
+  background: #fafafa;
+}
+
+.agenda-dia.es-hoy {
+  border-color: var(--limpiasoft-primary);
+}
+
+.agenda-fecha {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  width: 44px;
+}
+
+.agenda-numero {
+  font-size: 16px;
+  font-weight: 600;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.agenda-dia.es-hoy .agenda-numero {
+  background: var(--limpiasoft-primary);
+  color: #fff;
+}
+
+.agenda-dia-semana {
+  font-size: 11px;
+  color: #757575;
+  text-transform: uppercase;
+}
+
+.agenda-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.agenda-chips .chip-turno {
+  font-size: 13px;
+  padding: 4px 8px;
+  white-space: normal;
+}
+
+.agenda-vacio {
+  font-size: 13px;
+  color: #bdbdbd;
+  align-self: center;
+}

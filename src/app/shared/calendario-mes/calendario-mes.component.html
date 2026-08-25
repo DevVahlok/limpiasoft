@@ -11,31 +11,59 @@
   <h2 class="titulo-mes">{{ etiquetaMes }}</h2>
 </div>
 
-<div class="grid-cabecera">
-  <div class="celda-nombre-dia" *ngFor="let nombre of nombresDia">{{ nombre }}</div>
-</div>
+<ng-container *ngIf="!responsive.isHandset()">
+  <div class="grid-cabecera">
+    <div class="celda-nombre-dia" *ngFor="let nombre of nombresDia">{{ nombre }}</div>
+  </div>
 
-<div class="grid-semana" *ngFor="let semana of semanas">
+  <div class="grid-semana" *ngFor="let semana of semanas">
+    <button
+      type="button"
+      class="celda-dia"
+      *ngFor="let dia of semana"
+      [class.fuera-de-mes]="!dia.enMesActual"
+      [class.es-hoy]="dia.esHoy"
+      (click)="diaClick.emit(dia.iso)"
+    >
+      <span class="numero-dia">{{ dia.numero }}</span>
+      <div class="chips-turnos">
+        <span
+          class="chip-turno"
+          *ngFor="let turno of dia.turnos.slice(0, 3)"
+          [class.chip-completado]="turno.estado === 'completado'"
+          [class.chip-cancelado]="turno.estado === 'cancelado'"
+          [title]="etiquetaChip(turno)"
+        >
+          {{ etiquetaChip(turno) }}
+        </span>
+        <span class="chip-mas" *ngIf="dia.turnos.length > 3">+{{ dia.turnos.length - 3 }} más</span>
+      </div>
+    </button>
+  </div>
+</ng-container>
+
+<div class="agenda-lista" *ngIf="responsive.isHandset()">
   <button
     type="button"
-    class="celda-dia"
-    *ngFor="let dia of semana"
-    [class.fuera-de-mes]="!dia.enMesActual"
+    class="agenda-dia"
+    *ngFor="let dia of diasAgenda"
     [class.es-hoy]="dia.esHoy"
     (click)="diaClick.emit(dia.iso)"
   >
-    <span class="numero-dia">{{ dia.numero }}</span>
-    <div class="chips-turnos">
+    <div class="agenda-fecha">
+      <span class="agenda-numero">{{ dia.numero }}</span>
+      <span class="agenda-dia-semana">{{ nombreDiaSemana(dia.fecha) }}</span>
+    </div>
+    <div class="agenda-chips" *ngIf="dia.turnos.length > 0; else agendaVacio">
       <span
         class="chip-turno"
-        *ngFor="let turno of dia.turnos.slice(0, 3)"
+        *ngFor="let turno of dia.turnos"
         [class.chip-completado]="turno.estado === 'completado'"
         [class.chip-cancelado]="turno.estado === 'cancelado'"
-        [title]="etiquetaChip(turno)"
       >
         {{ etiquetaChip(turno) }}
       </span>
-      <span class="chip-mas" *ngIf="dia.turnos.length > 3">+{{ dia.turnos.length - 3 }} más</span>
     </div>
+    <ng-template #agendaVacio><span class="agenda-vacio">Sin turnos</span></ng-template>
   </button>
 </div>

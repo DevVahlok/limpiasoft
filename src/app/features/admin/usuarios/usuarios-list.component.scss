@@ -2,6 +2,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px 16px;
   margin-bottom: 16px;
 }
 
@@ -11,6 +13,10 @@
   color: var(--limpiasoft-primary);
   text-decoration: none;
   margin-bottom: 4px;
+}
+
+.tabla-contenedor {
+  overflow-x: auto;
 }
 
 table {

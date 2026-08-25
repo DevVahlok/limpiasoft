@@ -75,6 +75,7 @@
     </button>
   </div>
 
+  <div class="tabla-contenedor">
   <table mat-table [dataSource]="pagos()" class="mat-elevation-z1">
     <ng-container matColumnDef="fecha">
       <th mat-header-cell *matHeaderCellDef>Fecha</th>
@@ -111,6 +112,7 @@
     <tr mat-header-row *matHeaderRowDef="columnasPagos"></tr>
     <tr mat-row *matRowDef="let row; columns: columnasPagos"></tr>
   </table>
+  </div>
 
   <p *ngIf="pagos().length === 0" class="empty">Todavía no se ha registrado ningún pago.</p>
 </ng-container>

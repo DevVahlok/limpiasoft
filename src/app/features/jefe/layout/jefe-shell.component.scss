@@ -38,6 +38,10 @@
 
 .empresa-label {
   margin-left: 8px;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .user-label {
@@ -60,4 +64,19 @@
 
 .content {
   padding: 24px;
+}
+
+@media (max-width: 599.98px) {
+  .content {
+    padding: 12px;
+  }
+
+  .empresa-label {
+    max-width: 100px;
+  }
+
+  .banner-pausada {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
 }

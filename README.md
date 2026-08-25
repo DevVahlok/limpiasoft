@@ -69,6 +69,15 @@ Capa aparte, pensada para quien mantiene la aplicación, no para el personal de 
 
 Todas estas operaciones se hacen con `service_role` desde Edge Functions dedicadas (`admin-empresas`, `admin-usuarios`, `admin-desarrolladores`, `admin-pagos`), no ampliando las políticas RLS de `jefe`/`empleado` — un desarrollador nunca consulta las tablas de negocio directamente con su propia sesión.
 
+## Diseño responsive
+
+Toda la app (jefe, empleado y desarrolladores) se adapta a tablet y móvil, sin ninguna librería de UI adicional:
+
+- El menú lateral de cada vista pasa a un menú de hamburguesa superpuesto por debajo de 600px de ancho (`core/layout/responsive.service.ts`, que envuelve `BreakpointObserver` de Angular CDK), y se cierra solo al navegar a otra sección.
+- Los diálogos tienen un ancho máximo global (`95vw`, en `app.config.ts`) para no desbordar en pantallas estrechas.
+- Las tablas se desplazan horizontalmente dentro de su propio contenedor en vez de romper el ancho de la página.
+- El calendario mensual muestra la rejilla habitual en tablet/escritorio, y en móvil pasa a una vista de lista/agenda (un día por fila) — mismo componente (`shared/calendario-mes/`), sin duplicar la lógica de turnos ni el diálogo de detalle del día.
+
 ## Estructura del proyecto
 
 ```

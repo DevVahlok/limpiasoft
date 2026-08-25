@@ -68,6 +68,7 @@ h2 {
 .donut-wrapper {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 24px;
 }
 
@@ -177,7 +178,13 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px 16px;
   margin-bottom: 16px;
+}
+
+.tabla-contenedor {
+  overflow-x: auto;
 }
 
 table {
@@ -191,4 +198,15 @@ table {
 .empty {
   color: #757575;
   margin-top: 8px;
+}
+
+@media (max-width: 599.98px) {
+  .graficas {
+    grid-template-columns: 1fr;
+  }
+
+  .fila-barra {
+    grid-template-columns: 90px 1fr 64px;
+    gap: 6px;
+  }
 }

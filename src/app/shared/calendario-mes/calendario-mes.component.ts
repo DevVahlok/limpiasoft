@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
 import { Turno } from '../../core/turnos/turno.models';
+import { ResponsiveService } from '../../core/layout/responsive.service';
 
 export interface RangoMes {
   desde: string;
@@ -44,10 +45,12 @@ export class CalendarioMesComponent implements OnInit, OnChanges {
   @Output() readonly diaClick = new EventEmitter<string>();
   @Output() readonly mesCambiado = new EventEmitter<RangoMes>();
 
+  readonly responsive = inject(ResponsiveService);
   readonly nombresDia = NOMBRES_DIA;
 
   private mesActual = new Date();
   semanas: DiaCelda[][] = [];
+  diasAgenda: DiaCelda[] = [];
   etiquetaMes = '';
 
   ngOnInit(): void {
@@ -57,6 +60,10 @@ export class CalendarioMesComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     this.construirCeldas();
+  }
+
+  nombreDiaSemana(fecha: Date): string {
+    return this.nombresDia[(fecha.getDay() + 6) % 7];
   }
 
   etiquetaChip(turno: Turno): string {
@@ -131,5 +138,6 @@ export class CalendarioMesComponent implements OnInit, OnChanges {
       semanas.push(fila);
     }
     this.semanas = semanas;
+    this.diasAgenda = semanas.flat().filter((dia) => dia.enMesActual);
   }
 }

@@ -2,7 +2,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 16px;
   margin-bottom: 8px;
+}
+
+.tabla-contenedor {
+  overflow-x: auto;
 }
 
 table {
