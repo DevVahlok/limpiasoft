@@ -51,7 +51,7 @@ export class EmpleadoShellComponent {
   }
 
   cerrarSiEsMovil(): void {
-    if (this.responsive.isHandset()) {
+    if (this.responsive.isTabletOrHandset()) {
       void this.sidenav.close();
     }
   }

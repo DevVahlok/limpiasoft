@@ -1,5 +1,5 @@
 <mat-toolbar color="primary">
-  <button mat-icon-button *ngIf="responsive.isHandset()" (click)="sidenav.toggle()" aria-label="Abrir menú">
+  <button mat-icon-button *ngIf="responsive.isTabletOrHandset()" (click)="sidenav.toggle()" aria-label="Abrir menú">
     <mat-icon>menu</mat-icon>
   </button>
   <img src="assets/img/logo-icon.png" alt="" class="logo-icon" />
@@ -14,8 +14,8 @@
 
 <mat-sidenav-container class="shell-container">
   <mat-sidenav
-    [mode]="responsive.isHandset() ? 'over' : 'side'"
-    [opened]="!responsive.isHandset()"
+    [mode]="responsive.isTabletOrHandset() ? 'over' : 'side'"
+    [opened]="!responsive.isTabletOrHandset()"
     class="sidenav"
   >
     <mat-nav-list>
