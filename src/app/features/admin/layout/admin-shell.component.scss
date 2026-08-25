@@ -24,6 +24,7 @@
 
 .shell-container {
   height: calc(100vh - 64px);
+  height: calc(100dvh - 64px);
 }
 
 .sidenav {
@@ -36,10 +37,16 @@
 
 .content {
   padding: 24px;
+  // En modo "over" (móvil) mat-sidenav-content no hereda la altura de su
+  // contenedor y crece según su propio contenido, desbordando por debajo del
+  // viewport en vez de hacer scroll interno. Con box-sizing:border-box el
+  // padding queda incluido dentro de ese 100%, no se suma por fuera.
+  height: 100%;
+  box-sizing: border-box;
 }
 
 @media (max-width: 599.98px) {
   .content {
-    padding: 12px;
+    padding: 12px 12px 32px;
   }
 }

@@ -9,8 +9,8 @@
   <div class="tarjeta-fila" *ngFor="let f of filas()">
     <div class="tarjeta-titulo">{{ f.empleado.nombre_completo }}</div>
     <div class="tarjeta-campo"><span class="tarjeta-etiqueta">Horas trabajadas:</span>{{ f.horas.toFixed(2) }} h</div>
-    <div class="tarjeta-campo"><span class="tarjeta-etiqueta">Total a pagar:</span>{{ f.importe.toFixed(2) }} €</div>
     <div class="tarjeta-campo"><span class="tarjeta-etiqueta">Previsión del mes:</span>{{ f.previsionImporte.toFixed(2) }} €</div>
+    <div class="tarjeta-campo"><span class="tarjeta-etiqueta">Total a pagar:</span>{{ f.importe.toFixed(2) }} €</div>
     <div class="tarjeta-acciones">
       <button mat-button (click)="verDetalle(f)" [disabled]="f.detalle.length === 0">Ver detalle</button>
     </div>
