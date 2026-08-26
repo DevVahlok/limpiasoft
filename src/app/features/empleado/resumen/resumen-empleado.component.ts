@@ -77,7 +77,12 @@ export class ResumenEmpleadoComponent implements OnInit {
       const horasDe = (estado: string) =>
         turnos.filter((t) => t.estado === estado).reduce((acc, t) => acc + horasEntre(t.hora_inicio, t.hora_fin), 0);
 
-      this.horasPlanificadas.set(horasDe('programado'));
+      // Total del mes, completados o no (los cancelados no cuentan: no llegaron a hacerse).
+      this.horasPlanificadas.set(
+        turnos
+          .filter((t) => t.estado !== 'cancelado')
+          .reduce((acc, t) => acc + horasEntre(t.hora_inicio, t.hora_fin), 0)
+      );
       this.horasCompletadas.set(horasDe('completado'));
       this.totalACobrar.set(turnos.reduce((acc, t) => acc + (this.importe(t) ?? 0), 0));
       this.previsionMes.set(turnos.reduce((acc, t) => acc + this.importePotencial(t), 0));
