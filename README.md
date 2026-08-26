@@ -35,6 +35,7 @@ Todo el aislamiento entre empresas y entre roles se hace con políticas **RLS** 
 | `tarifas` | Historial de tarifa €/h por empleado (con fecha de vigencia, no un valor único) | Jefe: todo. Empleado: solo lectura de la suya |
 | `turnos` | Calendario: empleado + puesto + fecha + horario + estado (`programado`/`completado`/`cancelado`) | Jefe: todo. Empleado: solo lectura de los suyos |
 | `incidencias` | Reportes de problemas del empleado, opcionalmente ligados a un turno | Empleado: lee/crea las suyas. Jefe: lee/revisa las de su empresa |
+| `pagos_nomina` | Marca de "pagado" por empleado y mes en el resumen mensual (no mueve dinero, solo informativo) | Jefe: todo, de su empresa |
 | `app_admins` | Cuentas de desarrollador (ver más abajo), sin relación con ninguna empresa | Cada desarrollador solo puede leer su propia fila; el resto de operaciones pasan por Edge Functions |
 | `pagos` | Pagos reales registrados a mano por el desarrollador (empresa, importe, fecha, notas) | Sin políticas RLS: solo accesible vía Edge Function con `service_role` |
 
@@ -50,7 +51,7 @@ El SQL de todas las migraciones está versionado en [`supabase/migrations/`](sup
 - **Calendario**: vista mensual con los turnos de todos los empleados; asignar/editar/eliminar turnos; marcarlos como completados.
 - **Incidencias**: todas las de la empresa, con fecha, puesto y empleado; cambiar su estado (pendiente/revisada/resuelta); badge en el menú con el número de pendientes.
 - **Tarifas**: tarifa actual por empleado + historial completo; registrar un cambio de tarifa (nunca sobrescribe, añade una nueva entrada).
-- **Resumen mensual**: por empleado, horas trabajadas, total a pagar (solo turnos completados, a la tarifa vigente en cada fecha) y previsión del mes si se completan también los turnos aún programados.
+- **Resumen mensual**: por empleado, horas trabajadas, total a pagar (solo turnos completados, a la tarifa vigente en cada fecha) y previsión del mes si se completan también los turnos aún programados. Cada empleado se puede marcar como "pagado" ese mes (y desmarcar, con confirmación, por si hay un error) — es solo una marca informativa, no mueve dinero.
 
 ### Vista del empleado
 - **Mi calendario**: sus propios turnos (puesto + horario, sin verse a sí mismo listado como en la vista del jefe); acceso directo a "Reportar incidencia" desde un turno.

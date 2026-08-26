@@ -23,6 +23,18 @@ table {
   color: var(--limpiasoft-accent-dark);
 }
 
+.celda-pagado {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.chip-pagado {
+  background-color: #e6f4ea !important;
+  color: #1e7e34 !important;
+}
+
 .totales {
   margin-top: 16px;
 }

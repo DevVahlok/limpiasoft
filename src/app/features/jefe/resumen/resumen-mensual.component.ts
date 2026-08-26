@@ -1,18 +1,23 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 
+import { AuthService } from '../../../core/auth/auth.service';
 import { Profile } from '../../../core/auth/auth.models';
 import { ResponsiveService } from '../../../core/layout/responsive.service';
+import { PagosNominaService } from '../../../core/nomina/pagos-nomina.service';
 import { Tarifa } from '../../../core/tarifas/tarifa.models';
 import { TarifasService } from '../../../core/tarifas/tarifas.service';
 import { horasEntre, mesActualIso, rangoDelMes } from '../../../core/turnos/fecha.util';
 import { Turno } from '../../../core/turnos/turno.models';
 import { TurnosService } from '../../../core/turnos/turnos.service';
+import { ConfirmDialogComponent, ConfirmDialogData } from '../../../shared/confirm-dialog/confirm-dialog.component';
 import { SelectorMesComponent } from '../../../shared/selector-mes/selector-mes.component';
 import { EmpleadosService } from '../empleados/empleados.service';
 import { DetalleResumenComponent, DetalleResumenData } from './detalle-resumen.component';
@@ -30,6 +35,7 @@ interface FilaResumen {
   importe: number;
   previsionImporte: number;
   detalle: DetalleTurno[];
+  pagoId: string | null;
 }
 
 function importePorTarifaVigente(tarifasEmpleado: Tarifa[], turno: Turno): number {
@@ -45,8 +51,10 @@ function importePorTarifaVigente(tarifasEmpleado: Tarifa[], turno: Turno): numbe
     MatTableModule,
     MatButtonModule,
     MatIconModule,
+    MatChipsModule,
     MatDialogModule,
     MatProgressSpinnerModule,
+    MatSnackBarModule,
     SelectorMesComponent,
   ],
   templateUrl: './resumen-mensual.component.html',
@@ -56,13 +64,16 @@ export class ResumenMensualComponent implements OnInit {
   private readonly empleadosService = inject(EmpleadosService);
   private readonly turnosService = inject(TurnosService);
   private readonly tarifasService = inject(TarifasService);
+  private readonly pagosNominaService = inject(PagosNominaService);
   private readonly dialog = inject(MatDialog);
+  private readonly snackBar = inject(MatSnackBar);
   readonly responsive = inject(ResponsiveService);
+  readonly authService = inject(AuthService);
 
   mes = mesActualIso();
   readonly filas = signal<FilaResumen[]>([]);
   readonly loading = signal(true);
-  readonly columnas = ['nombre', 'horas', 'prevision', 'importe', 'acciones'];
+  readonly columnas = ['nombre', 'horas', 'prevision', 'importe', 'pagado', 'acciones'];
   readonly totalImporte = signal(0);
   readonly totalPrevision = signal(0);
 
@@ -85,7 +96,10 @@ export class ResumenMensualComponent implements OnInit {
     this.loading.set(true);
     try {
       const { desde, hasta } = rangoDelMes(this.mes);
-      const todosTurnos = await this.turnosService.listarPorRango(desde, hasta);
+      const [todosTurnos, pagosNomina] = await Promise.all([
+        this.turnosService.listarPorRango(desde, hasta),
+        this.pagosNominaService.listarPorMes(this.mes),
+      ]);
       const turnosCompletados = todosTurnos.filter((t) => t.estado === 'completado');
       // La previsión asume que también se completan los turnos aún programados (las incidencias cancelan el turno).
       const turnosPrevision = todosTurnos.filter((t) => t.estado !== 'cancelado');
@@ -111,6 +125,7 @@ export class ResumenMensualComponent implements OnInit {
           importe: detalle.reduce((acc, d) => acc + d.importe, 0),
           previsionImporte,
           detalle,
+          pagoId: pagosNomina.find((p) => p.empleado_id === empleado.id)?.id ?? null,
         };
       });
 
@@ -127,6 +142,48 @@ export class ResumenMensualComponent implements OnInit {
       width: '900px',
       maxWidth: '95vw',
       data: { empleadoNombre: fila.empleado.nombre_completo, detalle: fila.detalle },
+    });
+  }
+
+  async marcarPagado(fila: FilaResumen): Promise<void> {
+    const empresaId = this.authService.profile()?.empresa_id;
+    if (!empresaId) {
+      return;
+    }
+    try {
+      const pago = await this.pagosNominaService.marcarPagado(empresaId, fila.empleado.id, this.mes);
+      this.filas.update((filas) => filas.map((f) => (f === fila ? { ...f, pagoId: pago.id } : f)));
+    } catch (err) {
+      this.snackBar.open(err instanceof Error ? err.message : 'No se pudo marcar como pagado.', 'Cerrar', {
+        duration: 5000,
+      });
+    }
+  }
+
+  desmarcarPagado(fila: FilaResumen): void {
+    if (!fila.pagoId) {
+      return;
+    }
+    const ref = this.dialog.open<ConfirmDialogComponent, ConfirmDialogData, boolean>(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        titulo: 'Desmarcar como pagado',
+        mensaje: `¿Seguro que quieres desmarcar a ${fila.empleado.nombre_completo} como pagado este mes?`,
+      },
+    });
+
+    ref.afterClosed().subscribe(async (confirmado) => {
+      if (!confirmado || !fila.pagoId) {
+        return;
+      }
+      try {
+        await this.pagosNominaService.desmarcarPagado(fila.pagoId);
+        this.filas.update((filas) => filas.map((f) => (f === fila ? { ...f, pagoId: null } : f)));
+      } catch (err) {
+        this.snackBar.open(err instanceof Error ? err.message : 'No se pudo desmarcar el pago.', 'Cerrar', {
+          duration: 5000,
+        });
+      }
     });
   }
 }
