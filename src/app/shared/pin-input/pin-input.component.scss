@@ -1,5 +1,11 @@
+:host {
+  display: block;
+}
+
 .pin-input {
   display: flex;
+  width: 100%;
+  justify-content: center;
   gap: 12px;
 }
 
