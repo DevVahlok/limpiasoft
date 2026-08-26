@@ -1,0 +1,68 @@
+h1 {
+  margin: 0;
+}
+
+.cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  margin-bottom: 8px;
+}
+
+.selector-ciudad {
+  min-width: 220px;
+}
+
+.hint {
+  color: #757575;
+  font-size: 13px;
+  margin: 0 0 12px;
+}
+
+.mapa {
+  height: 400px;
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #eee;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.header-lista {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  margin-bottom: 16px;
+}
+
+.header-lista h2 {
+  font-size: 16px;
+  margin: 0;
+}
+
+.tabla-contenedor {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.acciones {
+  text-align: right;
+}
+
+.empty {
+  color: #757575;
+  margin-top: 8px;
+}
+
+@media (max-width: 599.98px) {
+  .mapa {
+    height: 280px;
+  }
+}

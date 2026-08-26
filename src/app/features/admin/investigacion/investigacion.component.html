@@ -1,0 +1,80 @@
+<div class="cabecera">
+  <h1>Investigación</h1>
+  <mat-form-field appearance="outline" class="selector-ciudad">
+    <mat-label>Ciudad</mat-label>
+    <mat-select [value]="ciudadSeleccionada()" (selectionChange)="onCiudadChange($event.value)">
+      <mat-option *ngFor="let c of ciudades" [value]="c.nombre">{{ c.nombre }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<p class="hint">
+  Clic en el mapa para añadir un prospecto en ese punto, o clic en un marcador para ver sus datos.
+</p>
+
+<div id="mapa-investigacion" class="mapa"></div>
+
+<div class="header-lista">
+  <h2>Empresas en {{ ciudadSeleccionada() }}</h2>
+  <button mat-flat-button color="primary" (click)="abrirFormulario(null)">
+    <mat-icon>add</mat-icon>
+    Nuevo prospecto
+  </button>
+</div>
+
+<mat-spinner *ngIf="loading()" diameter="32"></mat-spinner>
+
+<ng-container *ngIf="!loading()">
+  <div class="tarjetas-tabla" *ngIf="responsive.isHandset()">
+    <div class="tarjeta-fila" *ngFor="let p of prospectos()">
+      <div class="tarjeta-titulo">{{ p.nombre }}</div>
+      <div class="tarjeta-campo"><span class="tarjeta-etiqueta">Dirección:</span>{{ p.direccion || '—' }}</div>
+      <div class="tarjeta-campo"><span class="tarjeta-etiqueta">Teléfono:</span>{{ p.telefono || '—' }}</div>
+      <div class="tarjeta-campo"><span class="tarjeta-etiqueta">Web:</span>{{ p.web || '—' }}</div>
+      <div class="tarjeta-acciones">
+        <button mat-icon-button (click)="abrirFormulario(p)" aria-label="Editar prospecto">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button (click)="eliminar(p)" aria-label="Eliminar prospecto">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabla-contenedor" *ngIf="!responsive.isHandset()">
+    <table mat-table [dataSource]="prospectos()" class="mat-elevation-z1">
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef>Nombre</th>
+        <td mat-cell *matCellDef="let p">{{ p.nombre }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="direccion">
+        <th mat-header-cell *matHeaderCellDef>Dirección</th>
+        <td mat-cell *matCellDef="let p">{{ p.direccion || '—' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="telefono">
+        <th mat-header-cell *matHeaderCellDef>Teléfono</th>
+        <td mat-cell *matCellDef="let p">{{ p.telefono || '—' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let p" class="acciones">
+          <button mat-icon-button (click)="abrirFormulario(p)" aria-label="Editar prospecto">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="eliminar(p)" aria-label="Eliminar prospecto">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnas"></tr>
+    </table>
+  </div>
+
+  <p *ngIf="prospectos().length === 0" class="empty">Todavía no hay prospectos en esta ciudad.</p>
+</ng-container>

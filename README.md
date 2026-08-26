@@ -8,7 +8,7 @@ Cada empresa que se registra ve únicamente sus propios datos (multi-tenant con 
 
 ## Stack técnico
 
-- **Frontend**: Angular 16 (standalone components, sin NgModules), Angular Material.
+- **Frontend**: Angular 16 (standalone components, sin NgModules), Angular Material, y Leaflet (mapa de la pestaña "Investigación" de desarrolladores).
 - **Backend**: [Supabase](https://supabase.com) — Postgres con Row Level Security, Supabase Auth, y dos Edge Functions (Deno) para las operaciones que requieren privilegios de administrador.
 - **Sin backend propio**: el cliente Angular habla directamente con Supabase (PostgREST) respetando las políticas RLS; las Edge Functions solo se usan donde hace falta la Admin API (creación de cuentas).
 
@@ -38,6 +38,7 @@ Todo el aislamiento entre empresas y entre roles se hace con políticas **RLS** 
 | `pagos_nomina` | Marca de "pagado" por empleado y mes en el resumen mensual (no mueve dinero, solo informativo) | Jefe: todo, de su empresa |
 | `app_admins` | Cuentas de desarrollador (ver más abajo), sin relación con ninguna empresa | Cada desarrollador solo puede leer su propia fila; el resto de operaciones pasan por Edge Functions |
 | `pagos` | Pagos reales registrados a mano por el desarrollador (empresa, importe, fecha, notas) | Sin políticas RLS: solo accesible vía Edge Function con `service_role` |
+| `prospectos` | Empresas de limpieza candidatas a cliente (pestaña "Investigación"), sin relación con ninguna empresa clienta | Sin políticas RLS: solo accesible vía Edge Function con `service_role` |
 
 El historial de tarifas existe porque el resumen mensual necesita saber qué tarifa estaba vigente en la fecha de cada turno, no solo la actual (un cambio de sueldo a mitad de mes no debe recalcular retroactivamente lo ya trabajado).
 
@@ -69,6 +70,7 @@ Capa aparte, pensada para quien mantiene la aplicación, no para el personal de 
 - **Desarrolladores**: alta de otras cuentas de desarrollador, resetear su contraseña, borrado (un desarrollador no puede borrar su propia cuenta).
 - **Pausar/reanudar una empresa** (p. ej. por impago): mientras está pausada, ni su jefe ni sus empleados pueden crear ni modificar nada (puestos, tarifas, turnos, incidencias, cambio de PIN) — solo consultar lo que ya existe. El jefe y los empleados ven un aviso explicándolo, y en la vista de jefe se ocultan los botones de crear/editar en vez de dejar que fallen al pulsarlos. Se aplica con políticas RLS (bloquean insert/update/delete, nunca el select) más una comprobación en la Edge Function que da de alta usuarios nuevos. Las empresas que se registran ellas mismas desde `/registro` empiezan pausadas por defecto — el desarrollador las activa manualmente desde el panel.
 - **Ingresos**: cada empresa tiene un precio mensual (60€ IVA incluido por defecto, editable por empresa). La pestaña "Ingresos" resume empresas activas/pausadas, el ingreso mensual proyectado (precio de las activas) y los ingresos reales del mes en curso, con gráficas (activas vs. pausadas, precio por empresa, ingresos reales por mes — hechas con CSS puro, sin ninguna librería de gráficas) y una tabla de pagos que el desarrollador introduce a mano (fecha, empresa, importe, notas), sin pasarela de pago automática.
+- **Investigación**: libreta de prospección de clientes potenciales (empresas de limpieza reales de la zona de Cádiz que todavía no usan Limpiasoft), con selector de ciudad (Jerez de la Frontera y alrededores) y mapa (Leaflet + OpenStreetMap, sin API de pago). No es un buscador en vivo: la lista inicial se sembró a mano a partir de búsquedas reales por internet, y queda totalmente editable (alta/edición/borrado, con las coordenadas rellenándose solas si se crea haciendo clic en el mapa) para que el desarrollador la mantenga con el tiempo.
 
 Todas estas operaciones se hacen con `service_role` desde Edge Functions dedicadas (`admin-empresas`, `admin-usuarios`, `admin-desarrolladores`, `admin-pagos`), no ampliando las políticas RLS de `jefe`/`empleado` — un desarrollador nunca consulta las tablas de negocio directamente con su propia sesión.
 

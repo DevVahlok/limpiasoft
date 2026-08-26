@@ -40,6 +40,7 @@ export class AdminShellComponent {
     { path: 'empresas', label: 'Empresas', icon: 'business' },
     { path: 'ingresos', label: 'Ingresos', icon: 'payments' },
     { path: 'desarrolladores', label: 'Desarrolladores', icon: 'code' },
+    { path: 'investigacion', label: 'Investigación', icon: 'travel_explore' },
   ];
 
   cerrarSiEsMovil(): void {

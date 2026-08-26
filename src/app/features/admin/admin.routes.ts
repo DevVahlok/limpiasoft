@@ -23,6 +23,10 @@ export const adminRoutes: Routes = [
         path: 'ingresos',
         loadComponent: () => import('./ingresos/ingresos.component').then((m) => m.IngresosComponent),
       },
+      {
+        path: 'investigacion',
+        loadComponent: () => import('./investigacion/investigacion.component').then((m) => m.InvestigacionComponent),
+      },
     ],
   },
 ];

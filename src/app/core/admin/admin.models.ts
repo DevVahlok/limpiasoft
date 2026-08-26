@@ -23,3 +23,16 @@ export interface Pago {
   created_at: string;
   empresa: { nombre: string } | null;
 }
+
+export interface Prospecto {
+  id: string;
+  nombre: string;
+  ciudad: string;
+  direccion: string | null;
+  telefono: string | null;
+  web: string | null;
+  notas: string | null;
+  lat: number | null;
+  lng: number | null;
+  created_at: string;
+}
