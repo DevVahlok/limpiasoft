@@ -4,6 +4,8 @@ Plataforma SaaS para que empresas de limpieza gestionen a su personal: puestos d
 
 Cada empresa que se registra ve únicamente sus propios datos (multi-tenant con aislamiento por Row Level Security en Postgres). Dentro de cada empresa hay dos roles: **jefe** (gestiona todo) y **empleado** (ve su propio calendario, reporta incidencias y consulta lo que va a cobrar).
 
+**Demo en vivo**: https://devvahlok.github.io/limpiasoft/ (se despliega automáticamente en cada push a `main`, ver [Despliegue](#despliegue)).
+
 ## Stack técnico
 
 - **Frontend**: Angular 16 (standalone components, sin NgModules), Angular Material.
@@ -112,3 +114,9 @@ Las migraciones en `supabase/migrations/` están pensadas para aplicarse en orde
 
 - `ng build` — compila a `dist/`.
 - `ng test` — tests unitarios con Karma.
+
+## Despliegue
+
+La app se publica como sitio estático en **GitHub Pages** (https://devvahlok.github.io/limpiasoft/) mediante `.github/workflows/deploy-pages.yml`: cada push a `main` compila con `ng build --configuration production --base-href /limpiasoft/` y publica `dist/limpiasoft`. El backend sigue siendo el mismo Supabase de siempre (no hay servidor propio que desplegar aparte del build estático).
+
+El router usa `withHashLocation()` (URLs con `#`, p. ej. `/#/jefe/calendario`) porque GitHub Pages no puede redirigir una ruta interna al `index.html` en un refresco directo — con hash routing esa redirección no hace falta, funciona en cualquier hosting estático sin configuración adicional.
