@@ -1,7 +1,7 @@
 import { APP_INITIALIZER, ApplicationConfig } from '@angular/core';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideRouter, withComponentInputBinding, withHashLocation } from '@angular/router';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { AdminAuthService } from './core/admin/admin-auth.service';
 import { AuthService } from './core/auth/auth.service';
@@ -17,9 +17,7 @@ function initAdminAuth(adminAuthService: AdminAuthService) {
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    // withHashLocation: la app se sirve como sitio estático en GitHub Pages, que no puede
-    // redirigir rutas internas (/jefe/calendario) de vuelta a index.html en un refresco directo.
-    provideRouter(appRoutes, withComponentInputBinding(), withHashLocation()),
+    provideRouter(appRoutes, withComponentInputBinding()),
     provideAnimations(),
     {
       provide: APP_INITIALIZER,

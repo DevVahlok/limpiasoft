@@ -25,6 +25,11 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx ng build --configuration production --base-href /limpiasoft/
+      # GitHub Pages no puede redirigir una ruta interna (/jefe/calendario) al index.html en
+      # un refresco directo. Sirve 404.html para cualquier ruta que no exista como archivo, así
+      # que si es una copia del propio index.html, Angular arranca igual y el router ya lee la
+      # ruta real desde la URL — URLs limpias, sin necesidad de hash routing.
+      - run: cp dist/limpiasoft/index.html dist/limpiasoft/404.html
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist/limpiasoft
