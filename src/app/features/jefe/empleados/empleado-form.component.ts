@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 
+import { PinInputComponent } from '../../../shared/pin-input/pin-input.component';
 import { CrearEmpleadoResultado, EmpleadosService } from './empleados.service';
 
 export type EmpleadoFormResultado = CrearEmpleadoResultado;
@@ -24,6 +25,7 @@ export type EmpleadoFormResultado = CrearEmpleadoResultado;
     MatButtonModule,
     MatProgressSpinnerModule,
     MatSelectModule,
+    PinInputComponent,
   ],
   templateUrl: './empleado-form.component.html',
   styleUrls: ['./empleado-form.component.scss'],

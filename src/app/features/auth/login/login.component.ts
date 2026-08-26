@@ -9,6 +9,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router, RouterLink } from '@angular/router';
 
 import { AuthService } from '../../../core/auth/auth.service';
+import { PinInputComponent } from '../../../shared/pin-input/pin-input.component';
 
 @Component({
   selector: 'app-login',
@@ -22,6 +23,7 @@ import { AuthService } from '../../../core/auth/auth.service';
     MatInputModule,
     MatButtonModule,
     MatProgressSpinnerModule,
+    PinInputComponent,
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],

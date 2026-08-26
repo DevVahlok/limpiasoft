@@ -20,10 +20,10 @@
       <input matInput formControlName="telefono" />
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="full-width" *ngIf="!esEdicion">
-      <mat-label>PIN inicial</mat-label>
-      <input matInput type="password" formControlName="pin" inputmode="numeric" maxlength="4" />
-    </mat-form-field>
+    <div class="campo-pin" *ngIf="!esEdicion">
+      <label class="etiqueta-pin">PIN inicial</label>
+      <app-pin-input formControlName="pin"></app-pin-input>
+    </div>
     <p class="hint" *ngIf="!esEdicion">El usuario se generará automáticamente a partir del nombre.</p>
 
     <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>

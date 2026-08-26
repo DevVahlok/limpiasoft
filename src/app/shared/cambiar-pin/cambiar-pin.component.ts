@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { AuthService } from '../../core/auth/auth.service';
+import { PinInputComponent } from '../pin-input/pin-input.component';
 
 @Component({
   selector: 'app-cambiar-pin',
@@ -20,6 +21,7 @@ import { AuthService } from '../../core/auth/auth.service';
     MatInputModule,
     MatButtonModule,
     MatProgressSpinnerModule,
+    PinInputComponent,
   ],
   templateUrl: './cambiar-pin.component.html',
   styleUrls: ['./cambiar-pin.component.scss'],

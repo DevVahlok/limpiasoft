@@ -1,0 +1,18 @@
+<div class="pin-input" [class.disabled]="disabled">
+  <input
+    *ngFor="let i of indices"
+    #digitInput
+    type="password"
+    inputmode="numeric"
+    autocomplete="off"
+    maxlength="1"
+    class="pin-box"
+    [value]="digits[i]"
+    [disabled]="disabled"
+    (input)="onInput(i, $event)"
+    (keydown)="onKeydown(i, $event)"
+    (paste)="onPaste($event)"
+    (focus)="onFocus($event)"
+    (blur)="onBlur()"
+  />
+</div>

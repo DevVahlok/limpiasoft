@@ -2,15 +2,15 @@
 
 <form [formGroup]="form" (ngSubmit)="guardar()">
   <div mat-dialog-content class="fields">
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Nuevo PIN</mat-label>
-      <input matInput type="password" formControlName="nuevoPin" inputmode="numeric" maxlength="4" />
-    </mat-form-field>
+    <div class="campo-pin">
+      <label class="etiqueta-pin">Nuevo PIN</label>
+      <app-pin-input formControlName="nuevoPin"></app-pin-input>
+    </div>
 
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Confirmar PIN</mat-label>
-      <input matInput type="password" formControlName="confirmarPin" inputmode="numeric" maxlength="4" />
-    </mat-form-field>
+    <div class="campo-pin">
+      <label class="etiqueta-pin">Confirmar PIN</label>
+      <app-pin-input formControlName="confirmarPin"></app-pin-input>
+    </div>
 
     <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
   </div>

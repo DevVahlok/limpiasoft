@@ -1,0 +1,26 @@
+.pin-input {
+  display: flex;
+  gap: 12px;
+}
+
+.pin-box {
+  width: 44px;
+  height: 52px;
+  text-align: center;
+  font-size: 22px;
+  font-family: inherit;
+  border: 1px solid rgba(0, 0, 0, 0.38);
+  border-radius: 4px;
+  outline: none;
+  box-sizing: border-box;
+
+  &:focus {
+    border-color: var(--limpiasoft-primary);
+    border-width: 2px;
+  }
+}
+
+.disabled .pin-box {
+  background: #f5f5f5;
+  color: rgba(0, 0, 0, 0.38);
+}

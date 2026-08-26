@@ -10,6 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { Profile } from '../../../core/auth/auth.models';
 import { AdminUsuariosService } from '../../../core/admin/admin-usuarios.service';
+import { PinInputComponent } from '../../../shared/pin-input/pin-input.component';
 
 export interface UsuarioFormData {
   empresaId: string;
@@ -28,6 +29,7 @@ export interface UsuarioFormData {
     MatButtonModule,
     MatProgressSpinnerModule,
     MatSelectModule,
+    PinInputComponent,
   ],
   templateUrl: './usuario-form.component.html',
   styleUrls: ['./usuario-form.component.scss'],

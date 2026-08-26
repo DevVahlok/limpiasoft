@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { AdminUsuariosService } from '../../../core/admin/admin-usuarios.service';
+import { PinInputComponent } from '../../../shared/pin-input/pin-input.component';
 
 export interface ResetPinDialogData {
   usuarioId: string;
@@ -25,6 +26,7 @@ export interface ResetPinDialogData {
     MatInputModule,
     MatButtonModule,
     MatProgressSpinnerModule,
+    PinInputComponent,
   ],
   templateUrl: './reset-pin-dialog.component.html',
   styleUrls: ['./reset-pin-dialog.component.scss'],

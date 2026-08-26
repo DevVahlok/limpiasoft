@@ -9,17 +9,10 @@
         <input matInput formControlName="username" autocomplete="username" placeholder="nombre.apellido" />
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>PIN</mat-label>
-        <input
-          matInput
-          type="password"
-          formControlName="pin"
-          inputmode="numeric"
-          maxlength="4"
-          autocomplete="current-password"
-        />
-      </mat-form-field>
+      <div class="campo-pin">
+        <label class="etiqueta-pin">PIN</label>
+        <app-pin-input formControlName="pin"></app-pin-input>
+      </div>
 
       <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
 
