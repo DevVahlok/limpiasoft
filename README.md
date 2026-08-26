@@ -119,4 +119,4 @@ Las migraciones en `supabase/migrations/` están pensadas para aplicarse en orde
 
 La app se publica como sitio estático en **GitHub Pages** (https://devvahlok.github.io/limpiasoft/) mediante `.github/workflows/deploy-pages.yml`: cada push a `main` compila con `ng build --configuration production --base-href /limpiasoft/` y publica `dist/limpiasoft`. El backend sigue siendo el mismo Supabase de siempre (no hay servidor propio que desplegar aparte del build estático).
 
-El router usa `withHashLocation()` (URLs con `#`, p. ej. `/#/jefe/calendario`) porque GitHub Pages no puede redirigir una ruta interna al `index.html` en un refresco directo — con hash routing esa redirección no hace falta, funciona en cualquier hosting estático sin configuración adicional.
+GitHub Pages no puede redirigir una ruta interna (`/jefe/calendario`) al `index.html` en un refresco directo, así que el workflow copia `index.html` a `404.html` tras compilar: GitHub Pages sirve ese archivo (con estado 404) para cualquier ruta que no exista como archivo, Angular arranca igual y el router lee la ruta real desde la URL — sin necesidad de hash routing, URLs limpias.
